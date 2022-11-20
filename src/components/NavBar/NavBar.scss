@@ -1,0 +1,19 @@
+.navBar {
+    background-color: white;
+    box-shadow: 2px 3px 5px 4px rgb(0 0 0 / 10%);
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+        }
+    }
+}

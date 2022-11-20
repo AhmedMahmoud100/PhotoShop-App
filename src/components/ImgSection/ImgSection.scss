@@ -1,0 +1,39 @@
+.imgSection {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    flex: 3;
+
+    img {
+        width: 250px;
+
+    }
+
+    .img-buttons {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+
+        .upload {
+            input {
+                display: none;
+            }
+
+            label {
+                padding: 8px 20px;
+                border: 2px black dashed;
+                cursor: pointer;
+            }
+        }
+        .download {
+            border: 2px solid black;
+            padding: 8px 20px;
+            cursor: pointer;
+            
+        }
+
+       
+    }
+}
