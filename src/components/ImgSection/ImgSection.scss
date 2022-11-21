@@ -5,6 +5,11 @@
     gap: 20px;
     align-items: center;
     flex: 3;
+    
+
+    .image {
+        position: relative;
+    }
 
     img {
         width: 250px;

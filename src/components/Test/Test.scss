@@ -1,0 +1,97 @@
+
+    .square {
+        position: absolute;
+        border: 1px solid red;
+        z-index: 2;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .hidden {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            cursor: move;
+           
+
+            // &:active {
+            //     cursor: grabbing;
+            //     cursor: -moz-grabbing;
+            //     cursor: -webkit-grabbing;
+            // }
+        }
+
+        .corners {
+            position: absolute;
+            width: 12px;
+            height: 4px;
+            z-index: 3;
+            
+
+            &.BR {
+                bottom: 0;
+                right: 0;
+                cursor: se-resize;
+            }
+
+            &.BL {
+                bottom: 0;
+                left: 0;
+                cursor: nesw-resize
+            }
+
+            &.TR {
+                top: 0;
+                right: 0;
+                cursor: nesw-resize
+            }
+
+            &.TL {
+                top: 0;
+                left: 0;
+                cursor: nwse-resize
+            }
+        }
+
+        .sides {
+            position: absolute;
+
+            &.right {
+                width: 10%;
+                height: 80%;
+                top: 10%;
+                left: 90%;
+                cursor: e-resize;
+            }
+
+            &.left {
+                position: absolute;
+                width: 10%;
+                height: 80%;
+                top: 10%;
+                left: 0;
+                cursor: w-resize;
+            }
+
+            &.top {
+                width: 80%;
+                height: 10%;
+                top: 0;
+                left: 10%;
+                cursor: n-resize;
+            }
+
+            &.bottom {
+                width: 80%;
+                height: 10%;
+                top: 90%;
+                left: 10%;
+                cursor: s-resize
+            }
+
+        }
+
+    }

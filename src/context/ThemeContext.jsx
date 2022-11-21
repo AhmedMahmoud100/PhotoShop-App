@@ -6,7 +6,8 @@ export const ThemeContext = createContext({})
 export default function ContextPovider({children}) {
     const [mainTheme,setMainTheme] = useState({
       filters:'' ,
-      ReSize : ''
+      ReSize : '',
+      crop : '' ,
     })
 
   return (

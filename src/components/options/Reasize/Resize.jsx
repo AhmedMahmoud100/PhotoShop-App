@@ -20,7 +20,6 @@ export default function Resize() {
 
     function handlecheckValue(e) {
         setcheckValue(e.target.checked)
-
     }
     
     useEffect(() => {
@@ -38,19 +37,18 @@ export default function Resize() {
     }, [height])
 
     useEffect(() => {
-        setTheme({ ...theme, ReSize: {
-            width,
-            height
-        } })
-    }, [width,height])
-
-   
-    useEffect(() => {
         if (checkInput.current.checked) {
             let newHeight = 9 / 16 * width
             setHeight(newHeight)
         }
     }, [checkValue])
+
+    function handleResize() {
+        setTheme({ ...theme, ReSize: {
+            width,
+            height
+        } })
+    }
 
     return (
         <div className='re-size'>
@@ -66,7 +64,7 @@ export default function Resize() {
                 <input type="checkbox" id="ratio" ref={checkInput} checked={checkValue} onChange={handlecheckValue} />
                 <label htmlFor="ratio">Maintain aspect ratio</label>
             </div>
-            <button>Resize Image</button>
+            <button onClick={handleResize}>Resize Image</button>
         </div>
     )
 }
