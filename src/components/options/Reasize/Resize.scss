@@ -1,0 +1,20 @@
+.re-size {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    font-size: 20px;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+
+        input {
+            width: 50px;
+            color: gray;
+        }
+    }
+    button {
+        padding: 10px 20px;
+    }
+}

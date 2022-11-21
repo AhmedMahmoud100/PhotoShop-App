@@ -5,18 +5,17 @@ import { ThemeContext } from '../../../context/ThemeContext'
 export default function Filter() {
     const [theme, setTheme] = useContext(ThemeContext)
 
-    const [filtersValue, setfiltersValue] = useState(
-        {
-            saturate: 100,
-            contrast: 100,
-            brightness: 100,
-            sepia: 0,
-            grayscale: 0,
-            blur: 0,
-            rotate: 0,
-        }
-    )
-
+    console.log("theme",theme)
+    const initialValue = {
+        saturate: 100,
+        contrast: 100,
+        brightness: 100,
+        sepia: 0,
+        grayscale: 0,
+        blur: 0,
+        rotate: 0,
+    }
+    const [filtersValue, setfiltersValue] = useState(initialValue)
 
     function test() {
         let length = Object.keys(filtersValue).length
@@ -29,7 +28,7 @@ export default function Filter() {
             if (filter == "blur") {
                 dim = 'px'
             }
-              
+
             x = `${filter}(${filtersValue[filter]}${dim}) `
             if (filter == "rotate") {
                 x = `hue-rotate(${filtersValue[filter]}deg) `
@@ -37,29 +36,24 @@ export default function Filter() {
 
             newTheme += x
         }
-        setTheme(newTheme)
-
+        setTheme({...theme,filters:newTheme})
     }
+
+    useEffect(() => {
+        if (theme.filters == '') handleReset()
+    }, [theme])
     useEffect(() => {
         test();
-        console.log(theme, typeof theme)
+        console.log(theme.filters, typeof theme.filters)
     }, [filtersValue])
 
     function handleFilters(e) {
         let filter = e.target.id
-        setfiltersValue({ ...filtersValue, [filter]: e.target.value })
+        setfiltersValue({ ...filtersValue,[filter]: e.target.value })
     }
 
-    function handleReset (){
-        setfiltersValue( {
-            saturate: 100,
-            contrast: 100,
-            brightness: 100,
-            sepia: 0,
-            grayscale: 0,
-            blur: 0,
-            rotate: 0,
-        })
+    function handleReset() {
+        setfiltersValue(initialValue)
     }
 
     return (
