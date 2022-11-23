@@ -1,0 +1,28 @@
+.transform{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    font-size: 20px;
+    flex: 1;
+    background-color: antiquewhite;
+
+    h2{
+        font-size: 30px;
+    }
+    .inputField{
+        display: flex;
+        justify-content: space-between;
+        font-size: 25px;
+        }   
+
+        input {
+            width: 80px;
+            padding: 5px;
+            font-size: 20px;
+            
+    }
+    button {
+        font-size: 20px;
+    }
+}

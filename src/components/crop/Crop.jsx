@@ -1,4 +1,4 @@
-import {  useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ThemeContext } from '../../context/ThemeContext'
 import './Crop.scss'
 
@@ -7,13 +7,21 @@ function Crop() {
 
     function HandleCrop(e) {
         const target = e.target.id
-        setCrop({ ...crop, [target]: e.target.value ,apply:false})
-
+        setCrop({ ...crop, [target]: e.target.value, apply: false })
     }
 
     function PassCropTheme(e) {
         e.preventDefault()
         setCrop({ ...crop, apply: true })
+    }
+    function ResetCrop() {
+        setCrop({
+            offsetX: 0,
+            offsetY: 0,
+            sourceW: 150,
+            sourceH: 150,
+            apply: false,
+        })
     }
     return (
         <div className='crop'>
@@ -38,7 +46,7 @@ function Crop() {
                 </div>
                 <button type='submit'>apply</button>
             </form>
-            <button>Reset</button>
+            <button onClick={ResetCrop}>Reset</button>
 
         </div>
     )

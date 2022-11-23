@@ -5,16 +5,56 @@
     gap: 20px;
     align-items: center;
     flex: 3;
-    
 
-    .image {
+
+    .up {
         position: relative;
+
+        .first {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+
+            h2 {
+                font-size: 40px;
+            }
+            p {
+                font-size: 30px;
+                padding: 0 40px;
+            }
+            &.active {
+                display: flex;
+            }
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        .image {
+            
+            position: relative;
+
+            &.active {
+                display: flex;
+            }
+
+            &.hidden {
+                display: none;
+            }
+            .blur {
+                opacity: 0.8;
+            }
+
+        }
+
     }
 
     img {
         width: 250px;
     }
-    
+
 
     .img-buttons {
         display: flex;
@@ -32,13 +72,14 @@
                 cursor: pointer;
             }
         }
+
         .download {
             border: 2px solid black;
             padding: 8px 20px;
             cursor: pointer;
-            
+
         }
 
-       
+
     }
 }

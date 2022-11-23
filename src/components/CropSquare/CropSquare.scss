@@ -7,6 +7,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: rgb(255 255 255 / 30%);
 
         .hidden {
             position: absolute;
@@ -22,6 +23,7 @@
             //     cursor: -moz-grabbing;
             //     cursor: -webkit-grabbing;
             // }
+           
         }
 
         .corners {

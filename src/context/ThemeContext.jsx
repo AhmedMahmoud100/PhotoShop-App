@@ -5,8 +5,8 @@ export const ThemeContext = createContext({})
 
 export default function ContextPovider({ children }) {
   const [mainTheme, setMainTheme] = useState({
-    offsetX: 30,
-    offsetY: 100,
+    offsetX: 0,
+    offsetY: 0,
     sourceW: 150,
     sourceH: 150,
     apply: false,
