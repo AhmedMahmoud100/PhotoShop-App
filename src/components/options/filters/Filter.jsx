@@ -1,11 +1,8 @@
-import { useContext, useEffect, useState } from 'react'
+import {  useState } from 'react'
 import './Filter.scss'
-import { ThemeContext } from '../../../context/ThemeContext'
 
-export default function Filter() {
-    const [theme, setTheme] = useContext(ThemeContext)
+export default function Filter({filtersEffect}) {
 
-    console.log("theme",theme)
     const initialValue = {
         saturate: 100,
         contrast: 100,
@@ -15,49 +12,47 @@ export default function Filter() {
         blur: 0,
         rotate: 0,
     }
+    
     const [filtersValue, setfiltersValue] = useState(initialValue)
 
-    function test() {
-        let length = Object.keys(filtersValue).length
+    function ConvertToStyle(theme) {
+        let length = Object.keys(theme).length
         let dim = "%"
         let newTheme = ''
 
         for (let i = 0; i < length; i++) {
-            let filter = Object.keys(filtersValue)[i]
+            let filter = Object.keys(theme)[i]
             let x = ''
             if (filter == "blur") {
                 dim = 'px'
             }
 
-            x = `${filter}(${filtersValue[filter]}${dim}) `
+            x = `${filter}(${theme[filter]}${dim}) `
             if (filter == "rotate") {
-                x = `hue-rotate(${filtersValue[filter]}deg) `
+                x = `hue-rotate(${theme[filter]}deg) `
             }
 
             newTheme += x
         }
-        setTheme({...theme,filters:newTheme})
+        filtersEffect(newTheme)
+       
     }
 
-    useEffect(() => {
-        if (theme.filters == '') handleReset()
-    }, [theme])
-    useEffect(() => {
-        test();
-        console.log(theme.filters, typeof theme.filters)
-    }, [filtersValue])
-
     function handleFilters(e) {
-        let filter = e.target.id
-        setfiltersValue({ ...filtersValue,[filter]: e.target.value })
+        const filter = e.target.id
+        let newFiltersTheme = {...filtersValue,[filter]: e.target.value}
+        setfiltersValue(newFiltersTheme)
+       
+           ConvertToStyle(newFiltersTheme) 
     }
 
     function handleReset() {
         setfiltersValue(initialValue)
+        ConvertToStyle(initialValue) 
     }
 
     return (
-        <div className='filters'>
+        <div className='filters '>
             <ul>
                 <li>
                     <label htmlFor="saturate">saturate</label>

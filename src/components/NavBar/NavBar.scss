@@ -14,6 +14,10 @@
             flex-direction: column;
             gap: 10px;
             cursor: pointer;
+
+            svg,span {
+                pointer-events: none;
+            }
         }
     }
 }

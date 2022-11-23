@@ -1,61 +1,40 @@
-import { useEffect, useRef, useState,useContext } from 'react'
+import {  useContext, useState } from 'react'
+import { ThemeContext } from '../../context/ThemeContext'
 import './Crop.scss'
-import {ThemeContext} from '../../context/ThemeContext'
 
 function Crop() {
-    const [theme, setTheme] = useContext(ThemeContext)
+    const [crop, setCrop] = useContext(ThemeContext)
 
-  const initialState = {
-        offsetX: 0,
-        offsetY: 0,
-        sourceW: 150,
-        sourceH: 150,
-        apply : false,
-        
+    function HandleCrop(e) {
+        const target = e.target.id
+        setCrop({ ...crop, [target]: e.target.value ,apply:false})
+
     }
-    const [crop, setCrop] = useState(initialState)
-    const widthInput = useRef()
-    const heightInput = useRef()
-    const offsetXInput = useRef()
-    const offsetYInput = useRef()
 
-    function handleCrop(e) {
+    function PassCropTheme(e) {
         e.preventDefault()
-        setCrop({
-            offsetX : offsetXInput.current.value,
-            offsetY : offsetYInput.current.value ,
-            sourceW : widthInput.current.value,
-            sourceH : heightInput.current.value,
-            apply : true
-        })
+        setCrop({ ...crop, apply: true })
     }
-
-    useEffect(() => {
-        setTheme({...theme,crop:crop})
-    },[crop])
-
-
-console.log(theme)
     return (
         <div className='crop'>
             <h2>Crop</h2>
             <p>Drag the red box inside the image or change values below.</p>
-            <form onSubmit={handleCrop} >
+            <form onSubmit={PassCropTheme} >
                 <div>
-                    <label htmlFor="width">width</label>
-                    <input type="number" id='width' ref={widthInput}/>
+                    <label htmlFor="sourceW">width</label>
+                    <input type="number" id='sourceW' onChange={HandleCrop} value={crop.sourceW} />
                 </div>
                 <div>
-                    <label htmlFor="height">height</label>
-                    <input type="number" id='height' ref={heightInput}/>
+                    <label htmlFor="sourceH">height</label>
+                    <input type="number" id='sourceH' onChange={HandleCrop} value={crop.sourceH} />
                 </div>
                 <div>
-                    <label htmlFor="offSetX">Offset-X</label>
-                    <input type="number" id='offSetX' ref={offsetXInput}/>
+                    <label htmlFor="offsetX">Offset-X</label>
+                    <input type="number" id='offsetX' onChange={HandleCrop} value={crop.offsetX} />
                 </div>
                 <div>
-                    <label htmlFor="offSetY">Offset-y</label>
-                    <input type="number" id='offSety' ref={offsetYInput}/>
+                    <label htmlFor="offsetY">Offset-y</label>
+                    <input type="number" id='offsetY' onChange={HandleCrop} value={crop.offsetY} />
                 </div>
                 <button type='submit'>apply</button>
             </form>

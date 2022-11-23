@@ -1,53 +1,39 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import './Resize.scss'
-import { ThemeContext } from '../../../context/ThemeContext'
 
-export default function Resize() {
-    const [theme, setTheme] = useContext(ThemeContext)
+export default function Resize({ resizeEffect }) {
     const [checkValue, setcheckValue] = useState(false)
-    const checkInput = useRef()
     const [width, setWidth] = useState(300)
     const [height, setHeight] = useState(200)
 
     function HandleHeight(e) {
         setHeight(e.target.value)
+        if (checkValue) {
+            let newWidth = 16 / 9 * e.target.value
+            setWidth(newWidth)
+
+        }
     }
 
     function HandleWidth(e) {
         setWidth(e.target.value)
-
+        if (checkValue) {
+            let newHeight = 9 / 16 * e.target.value
+            setHeight(newHeight)
+        }
     }
 
     function handlecheckValue(e) {
         setcheckValue(e.target.checked)
+        if (e.target.checked) {
+            let newHeight = 9 / 16 * width
+            setHeight(newHeight)
+
+        }
     }
-    
-    useEffect(() => {
-        if (checkInput.current.checked) {
-            let newHeight = 9 / 16 * width
-            setHeight(newHeight)
-        }
-    }, [width])
-
-    useEffect(() => {
-        if (checkInput.current.checked) {
-            let newWidth = 16 / 9 * height
-            setWidth(newWidth)
-        }
-    }, [height])
-
-    useEffect(() => {
-        if (checkInput.current.checked) {
-            let newHeight = 9 / 16 * width
-            setHeight(newHeight)
-        }
-    }, [checkValue])
 
     function handleResize() {
-        setTheme({ ...theme, ReSize: {
-            width,
-            height
-        } })
+        resizeEffect({ width: width, height: height })
     }
 
     return (
@@ -61,7 +47,7 @@ export default function Resize() {
                 <input type="number" id='height' value={height} onChange={HandleHeight} />
             </div>
             <div className='ratio'>
-                <input type="checkbox" id="ratio" ref={checkInput} checked={checkValue} onChange={handlecheckValue} />
+                <input type="checkbox" id="ratio" checked={checkValue} onChange={handlecheckValue} />
                 <label htmlFor="ratio">Maintain aspect ratio</label>
             </div>
             <button onClick={handleResize}>Resize Image</button>

@@ -1,25 +1,10 @@
-import { positions } from '@mui/system'
-import React, { useEffect, useRef, useState, useContext } from 'react'
+import React, {  useState, useContext } from 'react'
 import { ThemeContext } from '../../context/ThemeContext'
 import './Test.scss'
 
 export default function Test() {
-
-    const [theme, setTheme] = useContext(ThemeContext)
-    const [dim, setdim] = useState(
-        {
-            width: 150,
-            height: 150,
-        }
-    )
-    if (theme) {
-        console.log(dim.width)
-    }
-    const [position, setposition] = useState({
-        top: 0,
-        left: 0,
-    }
-    )
+    const [crop, setcrop] = useContext(ThemeContext)
+    
     const [offset, setOffset] = useState({
         x: 0,
         y: 0
@@ -30,44 +15,19 @@ export default function Test() {
         height: 50
     })
 
-
     const [drag, setdrag] = useState(false)
     const [start, setstart] = useState(false)
 
     let style = {
-        width: dim.width + 'px',
-        height: dim.height + 'px',
-        top: position.top + 'px',
-        left: position.left + 'px'
+        width: crop.sourceW + 'px',
+        height: crop.sourceH + 'px',
+        top: crop.offsetY + 'px',
+        left: crop.offsetX + 'px'
     }
 
-    useEffect(() => {
-        setdim({
-
-            width: theme.crop.sourceW,
-            height: theme.crop.sourceH,
-        })
-
-        setposition({
-            top: theme.crop.offsetX,
-            left: theme.crop.offsetY,
-        })
-
-    }, [])
-
-    // useEffect(() => {
-    //     setTheme({...theme,crop:{
-    //         offsetX : position.left,
-    //         offsetY : position.top ,
-    //         sourceW : dim.width,
-    //         sourceH : dim.height,
-    //         apply:false
-    //     }})
-    // },[dim,position])
-
     function MoveStart(e) {
-        let offsetX = e.clientX - position.left;
-        let offsetY = e.clientY - 72 - position.top;
+        let offsetX = e.clientX - crop.offsetX;
+        let offsetY = e.clientY - 72 - crop.offsetY;
 
         setOffset({
             x: offsetX,
@@ -82,9 +42,10 @@ export default function Test() {
         let y = e.clientY - 72 - offset.y
 
         if (drag) {
-            setposition({
-                top: y,
-                left: x
+            setcrop({
+                ...crop,
+                offsetY: y,
+                offsetX: x
             })
         }
     }
@@ -92,89 +53,76 @@ export default function Test() {
     function MoveEnd(e) {
         let x = e.clientX - offset.x
         let y = e.clientY - 72 - offset.y
-        setposition({
-            top: y,
-            left: x
+        setcrop({
+            ...crop,
+            offsetY: y,
+            offsetX: x
         })
         setdrag(false)
     }
 
 
-
-
-
-
     function MouseDown(e) {
 
-
-        setstart(true)
     }
 
     function MouseMove(e) {
-        let x = e.clientX - position.left
-        let y = e.clientY - 72 - position.top
-
-
-        if (start) {
-            setdim({
-                width: x,
-                height: y,
-            })
-        }
+        let x = e.clientX - crop.offsetX
+        let y = e.clientY - crop.offsetY
+        setcrop({ ...crop, sourceW: x, sourceH: y })
 
     }
     function MouseEnd(e) {
         setstart(false)
     }
 
-
-
+    
     function MoveLeftStart() {
 
         setOriginalWidth({
-            width: dim.width,
-            height: dim.height
+            width: crop.sourceW,
+            height: crop.sourceH
         })
 
         setOffset({
-            x: position.left,
-            y: position.top
+            x: crop.offsetX,
+            y: crop.offsetY
         })
         setstart(true)
     }
 
     function MoveLeft(e) {
         let x = offset.x - e.clientX + originalWidth.width
-        let y = offset.y - e.clientY + 72 + originalWidth.height
+        let y = offset.y - e.clientY +  originalWidth.height
 
         if (start) {
 
-            setdim({
-                width: x,
-                height: y
+            setcrop({
+                sourceW: x,
+                sourceH: y,
+                offsetY: e.clientY ,
+                offsetX: e.clientX
             })
 
-            setposition({
-                top: e.clientY - 72,
-                left: e.clientX
-            })
         }
 
     }
 
     function MoveLeftEnd(e) {
         let x = offset.x - e.clientX + originalWidth.width
-        let y = offset.y - e.clientY + 72 + originalWidth.height
+        let y = offset.y - e.clientY +  originalWidth.height
 
-        setdim({
-            width: x,
-            height: y
-        })
+        if (start) {
 
-        setposition({
-            top: e.clientY - 72,
-            left: e.clientX
-        })
+            setcrop({
+                sourceW: x,
+                sourceH: y,
+                offsetY: e.clientY ,
+                offsetX: e.clientX
+            })
+
+        }
+
         setstart(false)
     }
 
@@ -183,57 +131,56 @@ export default function Test() {
     function MoveUPStart() {
 
         setOffset({
-            y: position.top
+            y: crop.offsetY
         })
 
         setOriginalWidth({
-            height: dim.height
+            height: crop.sourceH
         })
 
         setstart(true)
     }
 
     function MoveUP(e) {
-        let x = e.clientX - position.left
-        let y = offset.y - e.clientY + 72 + originalWidth.height
+        let x = e.clientX - crop.offsetX
+        let y = offset.y - e.clientY +  originalWidth.height
 
         if (start) {
 
-            setdim({
-                width: x,
-                height: y
+            setcrop({
+                ...crop,
+                sourceW: x,
+                sourceH: y,
+                offsetY: e.clientY 
             })
 
-            setposition({ ...position, top: e.clientY - 72 })
 
         }
     }
 
     function MoveUPEnd(e) {
-        let x = e.clientX - position.left
-        let y = offset.y - e.clientY + 72 + originalWidth.height
+        let x = e.clientX - crop.offsetX
+        let y = offset.y - e.clientY +  originalWidth.height
 
-        setdim({
-            width: x,
-            height: y
+        setcrop({
+            ...crop,
+            sourceW: x,
+            sourceH: y,
+            offsetY: e.clientY 
         })
-
-        setposition({ ...position, top: e.clientY - 72 })
-
 
         setstart(false)
     }
 
 
-
     function MoveDownStart() {
 
         setOffset({
-            x: position.left
+            x: crop.offsetX
         })
 
         setOriginalWidth({
-            width: dim.width
+            width: crop.sourceW
         })
 
         setstart(true)
@@ -241,111 +188,98 @@ export default function Test() {
 
     function MoveDown(e) {
         let x = offset.x - e.clientX + originalWidth.width
-        let y = e.clientY - 72 - position.top
-
+        let y = e.clientY -  crop.offsetY
 
         if (start) {
 
-            setdim({
-                width: x,
-                height: y
+            setcrop({...crop,
+                sourceW: x,
+                sourceH: y,
+                offsetX: e.clientX
             })
-
-            setposition({ ...position, left: e.clientX })
-
         }
     }
 
     function MoveDownEnd(e) {
         let x = offset.x - e.clientX + originalWidth.width
-        let y = e.clientY - 72 - position.top
+        let y = e.clientY -  crop.offsetY
 
-        setdim({
-            width: x,
-            height: y
+        setcrop({
+            sourceW: x,
+            sourceH: y,
+            offsetX: e.clientX
         })
-
-        setposition({ ...position, left: e.clientX })
 
         setstart(false)
     }
 
 
-
-
     function ExtendRight(e) {
-        let x = e.clientX - position.left
-        setdim({ ...dim, width: x })
+        let x = e.clientX - crop.offsetX
+        setcrop({ ...crop, sourceW: x })
     }
     function ExtendRightEnd(e) {
-        let x = e.clientX - position.left
-        setdim({ ...dim, width: x })
+        let x = e.clientX - crop.offsetX
+        setcrop({ ...crop, sourceW: x })
     }
 
 
     function ExtendLeftStart() {
         setOffset({
-            x: position.left
+            x: crop.offsetX
         })
 
         setOriginalWidth({
-            width: dim.width
+            width: crop.sourceH
         })
-
     }
 
     function ExtendLeft(e) {
         let x = offset.x - e.clientX + originalWidth.width
-        setdim({ ...dim, width: x })
+        setcrop({ ...crop, sourceW: x, offsetX: e.clientX })
 
-        setposition({ ...position, left: e.clientX })
+
     }
     function ExtendLeftEnd(e) {
         let x = offset.x - e.clientX + originalWidth.width
-        setdim({ ...dim, width: x })
-
-        setposition({ ...position, left: e.clientX })
+        setcrop({ ...crop, sourceW: x, offsetX: e.clientX })
     }
 
 
 
     function ExtendBottom(e) {
-        let y = e.clientY - 72 - position.top
-        setdim({ ...dim, height: y })
+        let y = e.clientY -  crop.offsetY
+        setcrop({ ...crop, sourceH: y })
     }
 
     function ExtendBottomEnd(e) {
-        let y = e.clientY - 72 - position.top
-        setdim({ ...dim, height: y })
+        let y = e.clientY -  crop.offsetY
+        setcrop({ ...crop, sourceH: y })
     }
 
 
     function ExtendTopStart() {
         setOffset({
-            y: position.top
+            y: crop.offsetY
         })
 
         setOriginalWidth({
-            height: dim.height
+            height: crop.sourceH
         })
 
     }
 
     function ExtendTop(e) {
-        let y = offset.y - e.clientY + 72 + originalWidth.height
-        setdim({ ...dim, height: y })
+        let y = offset.y - e.clientY  + originalWidth.height
+        setcrop({ ...crop, sourceH: y, offsetY: e.clientY  })
 
-        setposition({ ...position, top: e.clientY - 72 })
     }
 
     function ExtendTopEnd(e) {
-        let y = offset.y - 72 - e.clientY + originalWidth.height
-        setdim({ ...dim, height: y })
+        let y = offset.y -  e.clientY + originalWidth.height
+        setcrop({ ...crop, sourceH: y, offsetY: e.clientY  })
 
-        setposition({ ...position, top: e.clientY - 72 })
     }
-
-
 
 
     return (
