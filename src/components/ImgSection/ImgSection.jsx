@@ -9,28 +9,21 @@ export default function ImgSection(props) {
   const img = useRef()
   const canvas = useRef()
   const download = useRef()
-  const[cropEffect,setcropEffect] = useContext(ThemeContext)
+  const [cropEffect, setcropEffect] = useContext(ThemeContext)
 
-  console.log(cropEffect)
+
+
   function handleUpload() {
-    // setStyle({
-    //   filters: '',
-    //   ReSize: '',
-    //   crop: ''
-    // })
+
     let file = new FileReader();
     file.readAsDataURL(uploadInput.current.files[0]);
 
     file.onload = function () {
       setImgSrc(file.result)
     }
-  }
-
-  useEffect(() => {
 
     let ctx = canvas.current.getContext('2d')
     img.current.onload = function () {
-
       canvas.current.width = img.current.width;
       canvas.current.height = img.current.height;
       img.current.style.display = "none"
@@ -39,44 +32,52 @@ export default function ImgSection(props) {
 
     }
 
-    ctx.filter = props.filtersEffect
-    ctx.drawImage(img.current, 0, 0, canvas.current.width, canvas.current.height);
+  }
 
+  useEffect(() => {
 
-    if (cropEffect.apply) {
-      let offsetX = cropEffect.offsetX;
-      let offsetY = cropEffect.offsetY;
-      let sourceW = cropEffect.sourceW;
-      let sourceH = cropEffect.sourceH;
+    let ctx = canvas.current.getContext('2d')
+    if (img.current) {
 
-      canvas.current.width = sourceW;
-      canvas.current.height = sourceH;
-      // let destX = canvas.current.width / 2 - sourceW / 2;
-      // let destY = canvas.current.height / 2 - sourceH / 2;
-
+      canvas.current.width = props.resizeEffect.width;
+      canvas.current.height = props.resizeEffect.height;
+      img.current.style.display = "none"
       ctx.filter = props.filtersEffect
-      ctx.drawImage(img.current, offsetX, offsetY, sourceW, sourceH, 0, 0, sourceW, sourceH);
 
+      ctx.drawImage(img.current, 0, 0, canvas.current.width, canvas.current.height);
+
+
+      if (cropEffect.apply) {
+        let offsetX = cropEffect.offsetX;
+        let offsetY = cropEffect.offsetY;
+        let sourceW = cropEffect.sourceW;
+        let sourceH = cropEffect.sourceH;
+
+        canvas.current.width = sourceW;
+        canvas.current.height = sourceH;
+        // let destX = canvas.current.width / 2 - sourceW / 2;
+        // let destY = canvas.current.height / 2 - sourceH / 2;
+        ctx.filter = props.filtersEffect
+        ctx.drawImage(img.current, offsetX, offsetY, sourceW , sourceH , 0, 0, sourceW , sourceH );
+
+      }
     }
-  }, [cropEffect,props])
+  }, [cropEffect, props])
 
 
 
   function handleDownload() {
     download.current.href = canvas.current.toDataURL()
   }
-  let x = String(props.resizeEffect.width)
-
-  let y = String(props.resizeEffect.height)
 
 
   return (
     <div className='imgSection'>
       <div className="image">
-        <img src={imgSrc} ref={img} ></img>
+        <img src={imgSrc} ref={img} width='300px' height='250px' ></img>
 
-        <canvas ref={canvas} id="canvas" width={`${x}px`} height={`${y}px`} ></canvas>
-        <Test/>
+        <canvas ref={canvas} id="canvas"  ></canvas>
+        <Test />
       </div>
 
       <div className='img-buttons'>

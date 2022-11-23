@@ -13,8 +13,8 @@ function App() {
   const [section, setSection] = useState('')
   const [filtersEffect, setFiltersEffect] = useState('')
   const [resizeEffect,setresizeEffect] = useState({
-    width : 150,
-    height : 120
+    width : 300,
+    height : 250
   })
   
   return (
