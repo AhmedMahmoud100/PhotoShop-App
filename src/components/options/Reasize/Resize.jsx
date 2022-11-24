@@ -33,7 +33,7 @@ export default function Resize({ resizeEffect }) {
     }
 
     function handleResize() {
-        resizeEffect({ width: width, height: height })
+        resizeEffect({ width: width, height: height,apply:true })
     }
 
     return (

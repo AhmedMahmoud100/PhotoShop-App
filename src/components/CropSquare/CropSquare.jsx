@@ -19,7 +19,7 @@ export default function Test({ canvasDimentions }) {
         top: crop.offsetY + 'px',
         left: crop.offsetX + 'px'
     }
-    console.log(canvasDimentions)
+    
     function DragStart(e) {
         let offsetX = e.clientX - canvasDimentions.x - square.current.offsetLeft;
         let offsetY = e.clientY - canvasDimentions.y - square.current.offsetTop;

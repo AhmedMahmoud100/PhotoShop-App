@@ -1,8 +1,11 @@
-import {  useState } from 'react'
+import { useState } from 'react'
 import './Filter.scss'
 
-export default function Filter({filtersEffect}) {
-
+export default function Filter({ filtersEffect }) {
+    const [theme, setTheme] = useState({
+        filter: '',
+        apply: false
+    })
     const initialValue = {
         saturate: 100,
         contrast: 100,
@@ -12,7 +15,7 @@ export default function Filter({filtersEffect}) {
         blur: 0,
         rotate: 0,
     }
-    
+
     const [filtersValue, setfiltersValue] = useState(initialValue)
 
     function ConvertToStyle(theme) {
@@ -34,23 +37,27 @@ export default function Filter({filtersEffect}) {
 
             newTheme += x
         }
-        filtersEffect(newTheme)
-       
+        setTheme({ filter: newTheme, apply: false })
+        filtersEffect({ filter: newTheme, apply: false })
+
     }
 
     function handleFilters(e) {
         const filter = e.target.id
-        let newFiltersTheme = {...filtersValue,[filter]: e.target.value}
+        let newFiltersTheme = { ...filtersValue, [filter]: e.target.value }
         setfiltersValue(newFiltersTheme)
-       
-           ConvertToStyle(newFiltersTheme) 
+
+        ConvertToStyle(newFiltersTheme)
     }
 
-    function handleReset() {
+    function HandleReset() {
         setfiltersValue(initialValue)
-        ConvertToStyle(initialValue) 
+        ConvertToStyle(initialValue)
     }
 
+    function Apply() {
+        filtersEffect({ ...theme, apply: true })
+    }
     return (
         <div className='filters '>
             <ul>
@@ -83,8 +90,8 @@ export default function Filter({filtersEffect}) {
                     <input type="range" id="rotate" min='0' max='350' value={filtersValue.rotate} onChange={handleFilters} />
                 </li>
                 <li>
-                    <button onClick={handleReset}>Reset</button>
-                    <button>Apply</button>
+                    <button onClick={HandleReset}>Reset</button>
+                    <button onClick={Apply}>Apply</button>
                 </li>
             </ul>
         </div>

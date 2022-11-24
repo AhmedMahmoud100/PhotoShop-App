@@ -1,0 +1,97 @@
+.draw {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    flex: 1;
+    background-color: antiquewhite;
+    padding-bottom: 20px;
+
+    h2 {
+        font-size: 30px;
+    }
+
+    .box {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        .part1 {
+            font-size: 20px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .part2 {
+           
+            .progressBar {
+                margin: 10px;
+                width: calc(100% - 20px) ;
+                height: 5px;  
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                .value-bar {
+                  height: 4px;
+                  background-color: #09c;
+                  z-index: 2;
+                }
+                .circle {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background-color: #09c;
+                    z-index: 2;
+                    position: absolute;
+                    cursor: pointer;
+                }
+                .transperantLine {
+                    width: 100%;
+                    height: 4px;
+                    position: absolute;
+                    background-color: #c0bbbb;
+                }
+            }
+            
+        }
+    }
+    .colorsSection{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .colorsContainer{
+            display: flex;
+            gap: 10px;
+
+            div {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+            .white {
+                background-color: white;
+            }
+            .red {
+                background-color: red;
+            }
+            .green {
+                background-color: green;
+            }
+            .blue {
+                background-color: blue;
+            }
+            .black {
+                background-color: black;
+            }
+            .orange {
+                background-color: orange;
+            }
+        }
+    }
+    button {
+        font-size: 20px;
+        padding: 5px 20px;
+    }
+}

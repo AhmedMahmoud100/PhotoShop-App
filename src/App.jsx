@@ -6,8 +6,10 @@ import NavBar from './components/NavBar/NavBar'
 import Filter from './components/options/filters/Filter'
 import Resize from './components/options/Reasize/Resize'
 import ContextPovider from './context/ThemeContext'
-import Test from './components/CropSquare/CropSquare'
+
 import Transform from './components/Transform/Transform'
+import Test from './components/Test'
+import Draw from './components/Draw/Draw'
 
 function App() {
   const [section, setSection] = useState('')
@@ -25,11 +27,12 @@ function App() {
           {section === "filter" && <Filter filtersEffect={setFiltersEffect} />}
           {section === "resize" && <Resize resizeEffect={setresizeEffect}/>}
           {section === "transform" && <Transform rotateEffect={setRotateEffect}/>}
+          {section === "draw" && <Draw/>}
           
           <ContextPovider>
           {section === "crop" && <Crop />}
-
-          <ImgSection filtersEffect={filtersEffect} resizeEffect={resizeEffect} rotateEffect={rotateEffect}  showBorder={section === "crop" ? true : false}/>
+          {/* <Test /> */}
+          <ImgSection filtersEffect={filtersEffect} resizeEffect={resizeEffect} rotateEffect={rotateEffect}  showBorder={section === "crop" ? true : false} section={section}/>
           </ContextPovider>
         </div>
       
