@@ -9,7 +9,7 @@ export default function Test({ canvasDimentions }) {
         x: 0,
         y: 0,
         width: 50,
-        height: 50,
+        height: 50,  
     })
 
 
@@ -19,7 +19,7 @@ export default function Test({ canvasDimentions }) {
         top: crop.offsetY + 'px',
         left: crop.offsetX + 'px'
     }
-    
+
     function DragStart(e) {
         let offsetX = e.clientX - canvasDimentions.x - square.current.offsetLeft;
         let offsetY = e.clientY - canvasDimentions.y - square.current.offsetTop;
@@ -190,11 +190,19 @@ export default function Test({ canvasDimentions }) {
             setcrop({ ...crop, sourceH: y, offsetY: e.clientY - canvasDimentions.y })
         }
     }
+const Textstyle = {
+    color : crop.color ,
+    fontSize : crop.size ,
+    fontWeight : crop.weight
 
+}
     return (
         <>
             <div className='square' style={style} ref={square} onDragOver={Drag} >
-                <div className='hidden' draggable={true} onDragStart={DragStart} onDragEnd={Drag} ></div>
+            <input style={Textstyle} type="text" value={crop.text} onChange={(e) => setcrop({ ...crop, text: e.target.value })} />
+                <div className='hidden' draggable={true} onDragStart={DragStart} onDragEnd={Drag} >
+                   
+                </div>
                 <div className='corners BR' draggable={true} onDragStart={ExtendBottomRightStart} onDrag={ExtendBottomRight} ></div>
                 <div className='corners BL' draggable={true} onDragStart={ExtendBottomLeftStart} onDrag={ExtendBottomLeft}  ></div>
                 <div className='corners TR' draggable={true} onDragStart={ExtendTopRightStart} onDrag={ExtendTopRight}  ></div>

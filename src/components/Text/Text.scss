@@ -1,17 +1,35 @@
-.draw {
+.textSection {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center;
+    padding: 10px;
+    font-size: 20px;
     flex: 1;
     background-color: antiquewhite;
-    padding-bottom: 20px;
 
-    h2 {
-        font-size: 30px;
+    h3 {
+        font-size: 22px;
     }
 
-    .fontProp,.shadowProp {
+    .type {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+
+        button {
+            padding: 5px 10px;
+            font-size: 18px;
+            cursor: pointer;
+
+            &.active {
+                background-color: gold;
+                border: 2px solid gold;
+            }
+        }
+    }
+    
+    .fontProp {
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -63,6 +81,35 @@
 
         }
     }
+    .font {
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+
+
+        label {
+            font-size: 25px;
+        }
+
+        select {
+            font-size: 20px;
+        }
+    }
+
+    .fontWeight {
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+
+
+        label {
+            font-size: 25px;
+        }
+
+        select {
+            font-size: 20px;
+        }
+    }
 
     .colorsSection {
         display: flex;
@@ -112,10 +159,5 @@
             }
 
         }
-    }
-
-    button {
-        font-size: 20px;
-        padding: 5px 20px;
     }
 }

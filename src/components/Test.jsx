@@ -21,7 +21,6 @@ export default function Test() {
     })
  useEffect(() => {
     if(contextRef){
-        console.log(contextRef.current)
     }
  },[])
     

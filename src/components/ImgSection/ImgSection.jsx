@@ -15,14 +15,22 @@ export default function ImgSection(props) {
   const [canvasInfo, setCanvasInfo] = useState({})
   const ctxRef = useRef()
   const NewctxRef = useRef()
+  const [drawing, setdrawing] = useState(false)
+  const container = useRef()
+
 
   function handleUpload() {
     setcropEffect({
       offsetX: 0,
       offsetY: 0,
       sourceW: 150,
-      sourceH: 100,
+      sourceH: 150,
       apply: false,
+      text: 'text',
+      font: "sans-serif",
+      weight: "400",
+      color: "red",
+      size: 20,
     })
     let file = new FileReader();
     file.readAsDataURL(uploadInput.current.files[0]);
@@ -64,20 +72,19 @@ export default function ImgSection(props) {
   }
 
   function CanvasInfo(e) {
-    const newCanvasInfo = {
+    const updatedCanvasInfo = {
       width: canvas.current.width,
       height: canvas.current.height,
-      x: canvas.current.getBoundingClientRect().left,
-      y: canvas.current.getBoundingClientRect().top
+      x: container.current.getBoundingClientRect().left,
+      y: container.current.getBoundingClientRect().top
     }
-    setCanvasInfo({ ...newCanvasInfo })
+    setCanvasInfo({ ...updatedCanvasInfo })
   }
 
   useEffect(() => {
-    console.log(canvas.current.getBoundingClientRect().left)
     CanvasInfo();
-  }, [props, imgSrc])
-
+  }
+    , [props])
   function MakeNewCanvas() {
     NewCanvas.current.width = canvas.current.width;
     NewCanvas.current.height = canvas.current.height;
@@ -89,9 +96,9 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (NewctxRef.current) {
       MakeNewCanvas();
+      setcropEffect({ ...cropEffect, addText: false })
     }
-  }, [props])
-
+  }, [props.section])
 
   function ConvertToTheOriginalCanvas(option) {
     if (option) {
@@ -132,7 +139,7 @@ export default function ImgSection(props) {
     const rad = props.rotateEffect.deg * Math.PI / 180
     const width = canvas.current.width;
     const height = canvas.current.height
-    NewctxRef.current.translate(width / 2, height / 2)
+    NewctxRef.current.translate( width / 2, height / 2)
     NewctxRef.current.rotate(rad)
     NewctxRef.current.drawImage(canvas.current, width / 2 * (-1), height / 2 * (-1), width, height)
     NewctxRef.current.rotate(rad * (-1));
@@ -164,9 +171,66 @@ export default function ImgSection(props) {
     }
   }, [cropEffect])
 
+
+
+  useEffect(() => {
+    if (props.drawEffect.apply) {
+      ConvertToTheOriginalCanvas(props.drawEffect.apply)
+    }
+  }, [props.drawEffect])
+
+  function DrawStart(e, fontSize, fontColor, shadowSize, shadowColor) {
+    let x = e.clientX - canvasInfo.x
+    let y = e.clientY - canvasInfo.y
+    NewctxRef.current.beginPath()
+
+    NewctxRef.current.lineJoin = NewctxRef.current.lineCap = 'round'
+    NewctxRef.current.shadowBlur = shadowSize;
+    NewctxRef.current.shadowColor = shadowColor
+    NewctxRef.current.strokeStyle = fontColor
+    NewctxRef.current.lineWidth = fontSize
+    NewctxRef.current.moveTo(x, y)
+    setdrawing(true)
+  }
+
+  function Draw(e) {
+    if (drawing) {
+      let x = e.clientX - canvasInfo.x
+      let y = e.clientY - canvasInfo.y
+      NewctxRef.current.lineTo(x, y)
+      NewctxRef.current.stroke()
+    }
+
+  }
+  function DrawEnd() {
+    NewctxRef.current.closePath();
+    setdrawing(false)
+  }
+
+  function HandleText() {
+    if (NewctxRef.current) {
+      MakeNewCanvas();
+      let textOffsetY = cropEffect.offsetY + props.textEffect.size
+      let maxTextWidth = cropEffect.sourceW + cropEffect.offsetX
+      NewctxRef.current.fillStyle = `${props.textEffect.color}`
+      NewctxRef.current.font = `${props.textEffect.weight} ${props.textEffect.size}px ${props.textEffect.font}`
+      NewctxRef.current.fillText(cropEffect.text, cropEffect.offsetX, textOffsetY, maxTextWidth)
+    }
+  }
+
+  useEffect(() => {
+    if (props.section === "text" && props.textEffect.addText) {
+      setcropEffect({ ...cropEffect, ...props.textEffect })
+    }
+  }, [props.textEffect])
   useEffect(() => {
 
-  }, [props])
+    if (props.section === "text" && props.textEffect.apply) {
+      HandleText();
+      ConvertToTheOriginalCanvas(true)
+    }
+  }, [props, cropEffect])
+
   return (
     <div className='imgSection'>
       <div className="up">
@@ -176,13 +240,13 @@ export default function ImgSection(props) {
             the open photo button.
           </p>
         </div>
-        <div className={first ? "image hidden" : "image active"} >
+        <div className={first ? "image hidden" : "image active"} ref={container} >
 
           <img src={imgSrc} ref={img} width='300px' height='250px' ></img>
 
           <canvas ref={canvas} id="canvas" className={props.showBorder && !cropEffect.apply ? "blur" : "normal"} ></canvas>
-          <canvas ref={NewCanvas} ></canvas>
-          {props.showBorder && !cropEffect.apply ? <CropSquare canvasDimentions={canvasInfo} /> : null}
+          <canvas ref={NewCanvas} onMouseDown={props.section === "draw" ? (e) => DrawStart(e, props.drawEffect.fontSize, props.drawEffect.fontColor, props.drawEffect.shadowSize, props.drawEffect.shadowColor) : null} onMouseMove={props.section === "draw" ? Draw : null} onMouseUp={props.section === "draw" ? DrawEnd : null}></canvas>
+          {props.showBorder && !cropEffect.apply || cropEffect.addText ? <CropSquare canvasDimentions={canvasInfo} /> : null}
 
         </div>
 

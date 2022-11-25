@@ -10,6 +10,11 @@ export default function ContextPovider({ children }) {
     sourceW: 150,
     sourceH: 150,
     apply: false,
+    text: 'text',
+    font: "sans-serif",
+    weight: "400",
+    color: "red",
+    size: 20,
   })
 
   return (

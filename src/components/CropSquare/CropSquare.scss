@@ -1,99 +1,107 @@
+.square {
+    position: absolute;
+    border: 2px dashed red;
+    z-index: 2;
 
-    .square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255 255 255 / 30%);
+
+    input {
+        max-width: 100%;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        // color: transparent;
+        align-self: flex-start;
+    }
+
+    .hidden {
         position: absolute;
-        border: 2px dashed red;
-        z-index: 2;
+        width: 80%;
+        height: 80%;
+        top: 10%;
+        left: 10%;
+        cursor: move;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: rgb(255 255 255 / 30%);
 
-        .hidden {
-            position: absolute;
-            width: 80%;
+        // &:active {
+        //     cursor: grabbing;
+        //     cursor: -moz-grabbing;
+        //     cursor: -webkit-grabbing;
+        // }
+
+    }
+
+    .corners {
+        position: absolute;
+        width: 12px;
+        height: 4px;
+        z-index: 3;
+
+
+        &.BR {
+            bottom: 0;
+            right: 0;
+            cursor: se-resize;
+        }
+
+        &.BL {
+            bottom: 0;
+            left: 0;
+            cursor: nesw-resize
+        }
+
+        &.TR {
+            top: 0;
+            right: 0;
+            cursor: nesw-resize
+        }
+
+        &.TL {
+            top: 0;
+            left: 0;
+            cursor: nwse-resize
+        }
+    }
+
+    .sides {
+        position: absolute;
+
+        &.right {
+            width: 10%;
             height: 80%;
             top: 10%;
+            left: 90%;
+            cursor: e-resize;
+        }
+
+        &.left {
+            position: absolute;
+            width: 10%;
+            height: 80%;
+            top: 10%;
+            left: 0;
+            cursor: w-resize;
+        }
+
+        &.top {
+            width: 80%;
+            height: 10%;
+            top: 0;
             left: 10%;
-            cursor: move;
-           
-
-            // &:active {
-            //     cursor: grabbing;
-            //     cursor: -moz-grabbing;
-            //     cursor: -webkit-grabbing;
-            // }
-           
+            cursor: n-resize;
         }
 
-        .corners {
-            position: absolute;
-            width: 12px;
-            height: 4px;
-            z-index: 3;
-            
-
-            &.BR {
-                bottom: 0;
-                right: 0;
-                cursor: se-resize;
-            }
-
-            &.BL {
-                bottom: 0;
-                left: 0;
-                cursor: nesw-resize
-            }
-
-            &.TR {
-                top: 0;
-                right: 0;
-                cursor: nesw-resize
-            }
-
-            &.TL {
-                top: 0;
-                left: 0;
-                cursor: nwse-resize
-            }
-        }
-
-        .sides {
-            position: absolute;
-
-            &.right {
-                width: 10%;
-                height: 80%;
-                top: 10%;
-                left: 90%;
-                cursor: e-resize;
-            }
-
-            &.left {
-                position: absolute;
-                width: 10%;
-                height: 80%;
-                top: 10%;
-                left: 0;
-                cursor: w-resize;
-            }
-
-            &.top {
-                width: 80%;
-                height: 10%;
-                top: 0;
-                left: 10%;
-                cursor: n-resize;
-            }
-
-            &.bottom {
-                width: 80%;
-                height: 10%;
-                top: 90%;
-                left: 10%;
-                cursor: s-resize
-            }
-
+        &.bottom {
+            width: 80%;
+            height: 10%;
+            top: 90%;
+            left: 10%;
+            cursor: s-resize
         }
 
     }
+
+}
