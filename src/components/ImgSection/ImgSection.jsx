@@ -17,7 +17,13 @@ export default function ImgSection(props) {
   const NewctxRef = useRef()
   const [drawing, setdrawing] = useState(false)
   const container = useRef()
-
+  const sticker = useRef()
+  const [stickerPosition, setStickerPosition] = useState(
+    {
+      x: 0,
+      y: 0
+    }
+  )
 
   function handleUpload() {
     setcropEffect({
@@ -53,7 +59,7 @@ export default function ImgSection(props) {
       img.current.style.display = "none"
 
       ctx.drawImage(img.current, 0, 0, canvas.current.width, canvas.current.height);
-
+      MakeNewCanvas();
     }
   }
 
@@ -139,7 +145,7 @@ export default function ImgSection(props) {
     const rad = props.rotateEffect.deg * Math.PI / 180
     const width = canvas.current.width;
     const height = canvas.current.height
-    NewctxRef.current.translate( width / 2, height / 2)
+    NewctxRef.current.translate(width / 2, height / 2)
     NewctxRef.current.rotate(rad)
     NewctxRef.current.drawImage(canvas.current, width / 2 * (-1), height / 2 * (-1), width, height)
     NewctxRef.current.rotate(rad * (-1));
@@ -231,6 +237,95 @@ export default function ImgSection(props) {
     }
   }, [props, cropEffect])
 
+  function HandleBorder() {
+    if (NewctxRef.current) {
+      let newWidth = canvas.current.width + props.borderEffect.width * 2
+      let newHeight = canvas.current.height + props.borderEffect.width * 2
+      NewCanvas.current.width = newWidth
+      NewCanvas.current.height = newHeight
+
+      NewctxRef.current.beginPath();
+      NewctxRef.current.strokeStyle = props.borderEffect.color;
+      NewctxRef.current.lineWidth = props.borderEffect.width
+      NewctxRef.current.strokeRect(0, 0, newWidth, newHeight)
+      NewctxRef.current.drawImage(img.current, props.borderEffect.width / 2, props.borderEffect.width / 2, canvas.current.width + props.borderEffect.width, canvas.current.height + props.borderEffect.width)
+    }
+  }
+
+  useEffect(() => {
+    HandleBorder();
+    ConvertToTheOriginalCanvas(props.borderEffect.apply)
+  }, [props.borderEffect])
+
+  function HandleFrame() {
+    if (NewctxRef.current) {
+      let offsite = 50;
+      if (props.frameEffect.id == 2) {
+        offsite = 80
+      }
+      else if (props.frameEffect.id == 3) {
+        offsite = 100
+      }
+      else if (props.frameEffect.id == 4 || props.frameEffect.id == 5) {
+        offsite = 40
+      }
+      else if (props.frameEffect.id == 6) {
+        offsite = 350
+      }
+      const frameImage = new Image(NewCanvas.current.width, NewCanvas.current.height);
+      frameImage.src = props.frameEffect.src
+
+      NewCanvas.current.width = canvas.current.width + offsite
+      NewCanvas.current.height = canvas.current.height + offsite
+      NewctxRef.current.drawImage(canvas.current, offsite / 2, offsite / 2, canvas.current.width, canvas.current.height)
+      NewctxRef.current.drawImage(frameImage, 0, 0, NewCanvas.current.width, NewCanvas.current.height)
+    }
+  }
+
+  useEffect(() => {
+    HandleFrame();
+    ConvertToTheOriginalCanvas(props.frameEffect.apply)
+  }, [props.frameEffect])
+
+
+  function HandleSticker() {
+    if (NewctxRef.current && props.stickerEffect.src) {
+      sticker.current.style.display = 'block'
+      if (props.stickerEffect.apply) {
+        sticker.current.style.display = 'none'
+        NewctxRef.current.drawImage(sticker.current, stickerPosition.x, stickerPosition.y, props.stickerEffect.width, props.stickerEffect.height)
+      }
+    }
+  }
+
+  useEffect(() => {
+    HandleSticker();
+    ConvertToTheOriginalCanvas(props.stickerEffect.apply)
+  }, [props.stickerEffect])
+
+
+  function DragStart(e) {
+    e.dataTransfer.setDragImage(new Image(), 0, 0)
+  }
+
+  function Drag(e) {
+    let offsetX = e.clientX - canvasInfo.x;
+    let offsetY = e.clientY - canvasInfo.y;
+    if (offsetX < canvasInfo.width + props.stickerEffect.width && offsetY < canvasInfo.height + props.stickerEffect.height) {
+      setStickerPosition({
+        x: offsetX,
+        y: offsetY
+      })
+    }
+  }
+
+  const stickerStyle = {
+    top: stickerPosition.y,
+    left: stickerPosition.x,
+    width: +props.stickerEffect.width || 50,
+    height: +props.stickerEffect.height || 40
+  }
+
   return (
     <div className='imgSection'>
       <div className="up">
@@ -247,6 +342,7 @@ export default function ImgSection(props) {
           <canvas ref={canvas} id="canvas" className={props.showBorder && !cropEffect.apply ? "blur" : "normal"} ></canvas>
           <canvas ref={NewCanvas} onMouseDown={props.section === "draw" ? (e) => DrawStart(e, props.drawEffect.fontSize, props.drawEffect.fontColor, props.drawEffect.shadowSize, props.drawEffect.shadowColor) : null} onMouseMove={props.section === "draw" ? Draw : null} onMouseUp={props.section === "draw" ? DrawEnd : null}></canvas>
           {props.showBorder && !cropEffect.apply || cropEffect.addText ? <CropSquare canvasDimentions={canvasInfo} /> : null}
+          {props.section === 'sticker' ? <img src={props.stickerEffect.src} ref={sticker} className='sticker' draggable={true} onDragStart={DragStart} onDragEnd={Drag} style={stickerStyle} ></img> : null}
 
         </div>
 
@@ -260,8 +356,6 @@ export default function ImgSection(props) {
         <div className='download'>
           <a download={true} id="download" onClick={handleDownload} ref={download}>Download</a>
         </div>
-
-
       </div>
 
     </div>

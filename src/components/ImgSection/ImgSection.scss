@@ -46,7 +46,14 @@
             .blur {
                 opacity: 0.8;
             }
-
+         
+            .sticker {
+                position: absolute;
+                display: none;
+               
+                padding: 0;
+                background-color: transparent;
+            }
         }
 
     }

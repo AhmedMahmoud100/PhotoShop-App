@@ -1,0 +1,22 @@
+.sticker {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    font-size: 20px;
+    flex: 1;
+    background-color: antiquewhite;
+
+    .stickerContaier {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(50,1fr));
+        gap: 20px;
+        justify-content: center;
+
+        img {
+            width: 50px;
+            height: 40px;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,31 @@
+[
+    {
+        "id": 0,
+        "src": "/public/frame-0.png"
+    },
+    {
+        "id": 1,
+        "src": "/public/frame-1.png"
+    },
+    {
+        "id": 2,
+        "src": "/public/frame-2.png"
+    },
+    {
+        "id": 3,
+        "src": "/public/frame-3.png"
+    },
+    {
+        "id": 4,
+        "src": "/public/frame-4.png"
+    },
+    {
+        "id": 5,
+        "src": "/public/frame-5.png"
+    },
+    {
+        "id": 6,
+        "src": "/public/frame-6.png"
+    }
+
+]

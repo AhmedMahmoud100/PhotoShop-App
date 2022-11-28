@@ -9,7 +9,7 @@ import TextIncreaseIcon from '@mui/icons-material/TextIncrease';
 import HexagonOutlinedIcon from '@mui/icons-material/HexagonOutlined';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import FilterFramesOutlinedIcon from '@mui/icons-material/FilterFramesOutlined';
-import RoundedCornerOutlinedIcon from '@mui/icons-material/RoundedCornerOutlined';
+import BorderOuterIcon from '@mui/icons-material/BorderOuter';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 
 export default function NavBar({ section }) {
@@ -45,7 +45,7 @@ export default function NavBar({ section }) {
                     <HexagonOutlinedIcon />
                     <span>Sharpes</span>
                 </li>
-                <li onClick={() => section("stickers")}>
+                <li onClick={() => section("sticker")}>
                     <InsertEmoticonOutlinedIcon />
                     <span>Stickers</span>
                 </li>
@@ -53,9 +53,9 @@ export default function NavBar({ section }) {
                     <FilterFramesOutlinedIcon />
                     <span>Frame</span>
                 </li>
-                <li onClick={() => section("corners")}>
-                    <RoundedCornerOutlinedIcon />
-                    <span>Corners</span>
+                <li onClick={() => section("border")}>
+                    <BorderOuterIcon />
+                    <span>Border</span>
                 </li>
                 <li onClick={() => section("background")}>
                     <WallpaperOutlinedIcon />
