@@ -10,7 +10,7 @@ import HexagonOutlinedIcon from '@mui/icons-material/HexagonOutlined';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import FilterFramesOutlinedIcon from '@mui/icons-material/FilterFramesOutlined';
 import BorderOuterIcon from '@mui/icons-material/BorderOuter';
-import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
+import ColorizeIcon from '@mui/icons-material/Colorize';
 
 export default function NavBar({ section }) {
 
@@ -41,9 +41,9 @@ export default function NavBar({ section }) {
                     <TextIncreaseIcon />
                     <span>Text</span>
                 </li>
-                <li onClick={() => section("sharpes")}>
+                <li onClick={() => section("shape")}>
                     <HexagonOutlinedIcon />
-                    <span>Sharpes</span>
+                    <span>Shapes</span>
                 </li>
                 <li onClick={() => section("sticker")}>
                     <InsertEmoticonOutlinedIcon />
@@ -57,9 +57,9 @@ export default function NavBar({ section }) {
                     <BorderOuterIcon />
                     <span>Border</span>
                 </li>
-                <li onClick={() => section("background")}>
-                    <WallpaperOutlinedIcon />
-                    <span>BackGround</span>
+                <li onClick={() => section("color")}>
+                    <ColorizeIcon />
+                    <span>Color Extraction</span>
                 </li>
 
             </ul>

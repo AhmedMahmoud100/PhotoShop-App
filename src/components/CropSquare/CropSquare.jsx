@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef } from 'react'
 import { ThemeContext } from '../../context/ThemeContext'
 import './CropSquare.scss'
+import { Drag, DragStart } from '../../Functions/Crop'
 
 export default function Test({ canvasDimentions }) {
     const [crop, setcrop] = useContext(ThemeContext)
@@ -9,45 +10,14 @@ export default function Test({ canvasDimentions }) {
         x: 0,
         y: 0,
         width: 50,
-        height: 50,  
+        height: 50,
     })
 
-
-    let style = {
+    const style = {
         width: crop.sourceW + 'px',
         height: crop.sourceH + 'px',
         top: crop.offsetY + 'px',
         left: crop.offsetX + 'px'
-    }
-
-    function DragStart(e) {
-        let offsetX = e.clientX - canvasDimentions.x - square.current.offsetLeft;
-        let offsetY = e.clientY - canvasDimentions.y - square.current.offsetTop;
-
-        setDim({
-            ...dim,
-            x: offsetX,
-            y: offsetY
-        })
-        e.dataTransfer.setDragImage(new Image(), 0, 0)
-    }
-
-    function Drag(e) {
-        let x = e.clientX - canvasDimentions.x - dim.x
-        let y = e.clientY - canvasDimentions.y - dim.y
-
-        if (
-            e.clientX - canvasDimentions.x > dim.x &&
-            x < canvasDimentions.width - crop.sourceW &&
-            e.clientY - canvasDimentions.y > dim.y &&
-            y < canvasDimentions.height - crop.sourceH
-        ) {
-            setcrop({
-                ...crop,
-                offsetY: y,
-                offsetX: x
-            })
-        }
     }
 
     function ExtendBottomRightStart(e) {
@@ -60,8 +30,8 @@ export default function Test({ canvasDimentions }) {
 
     function ExtendBottomRight(e) {
         if (e.clientY > 0 && e.clientX > 0) {
-            let y = e.clientY - canvasDimentions.y - square.current.offsetTop
-            let x = e.clientX - dim.x + dim.width
+            let y = Math.round(e.clientY - canvasDimentions.y - square.current.offsetTop)
+            let x = Math.round(e.clientX - dim.x + dim.width)
             if (e.clientY < canvasDimentions.y + canvasDimentions.height && e.clientX < canvasDimentions.x + canvasDimentions.width) {
                 setcrop({ ...crop, sourceH: y, sourceW: x })
             }
@@ -82,12 +52,12 @@ export default function Test({ canvasDimentions }) {
     }
 
     function ExtendTopLeft(e) {
-        let x = dim.x - e.clientX + dim.width
-        let y = dim.y - e.clientY + canvasDimentions.y + dim.height
+        let x = Math.round(dim.x - e.clientX + dim.width)
+        let y = Math.round(dim.y - e.clientY + canvasDimentions.y + dim.height)
         if (e.clientX > canvasDimentions.x && e.clientY > canvasDimentions.y) {
             setcrop({
-                ...crop, sourceW: x, offsetX: dim.left - (dim.x - e.clientX),
-                sourceH: y, offsetY: e.clientY - canvasDimentions.y
+                ...crop, sourceW: x, offsetX: Math.round(dim.left - (dim.x - e.clientX)),
+                sourceH: y, offsetY: Math.round(e.clientY - canvasDimentions.y)
             })
         }
     }
@@ -103,13 +73,13 @@ export default function Test({ canvasDimentions }) {
     }
 
     function ExtendTopRight(e) {
-        let x = e.clientX - dim.x + dim.width
-        let y = dim.y - e.clientY + canvasDimentions.y + dim.height
+        let x = Math.round(e.clientX - dim.x + dim.width)
+        let y = Math.round(dim.y - e.clientY + canvasDimentions.y + dim.height)
 
         if (e.clientX < canvasDimentions.x + canvasDimentions.width &&
             e.clientY > canvasDimentions.y
         ) {
-            setcrop({ ...crop, sourceW: x, sourceH: y, offsetY: e.clientY - canvasDimentions.y })
+            setcrop({ ...crop, sourceW: x, sourceH: y, offsetY: Math.round(e.clientY - canvasDimentions.y) })
         }
     }
 
@@ -124,12 +94,12 @@ export default function Test({ canvasDimentions }) {
     }
 
     function ExtendBottomLeft(e) {
-        let x = dim.x - e.clientX + dim.width
-        let y = e.clientY - canvasDimentions.y - square.current.offsetTop
+        let x = Math.round(dim.x - e.clientX + dim.width)
+        let y = Math.round(e.clientY - canvasDimentions.y - square.current.offsetTop)
         if (e.clientX > canvasDimentions.x &&
             e.clientY < canvasDimentions.y + canvasDimentions.height
         ) {
-            setcrop({ ...crop, sourceW: x, offsetX: dim.left - (dim.x - e.clientX), sourceH: y })
+            setcrop({ ...crop, sourceW: x, offsetX: Math.round(dim.left - (dim.x - e.clientX)), sourceH: y })
         }
     }
 
@@ -143,7 +113,7 @@ export default function Test({ canvasDimentions }) {
 
     function ExtendRight(e) {
         if (e.clientX > 0) {
-            let x = e.clientX - dim.x + dim.width
+            let x = Math.round(e.clientX - dim.x + dim.width)
             if (e.clientX < canvasDimentions.x + canvasDimentions.width) {
                 setcrop({ ...crop, sourceW: x })
             }
@@ -161,15 +131,17 @@ export default function Test({ canvasDimentions }) {
     }
 
     function ExtendLeft(e) {
-        let x = dim.x - e.clientX + dim.width
+        let x = Math.round(dim.x - e.clientX + dim.width)
+        let offsetX = Math.round(dim.left - (dim.x - e.clientX))
         if (e.clientX > canvasDimentions.x) {
-            setcrop({ ...crop, sourceW: x, offsetX: dim.left - (dim.x - e.clientX) })
+            setcrop({ ...crop, sourceW: x, offsetX: offsetX })
         }
     }
 
     function ExtendBottom(e) {
         if (e.clientY > 0) {
-            let y = e.clientY - canvasDimentions.y - square.current.offsetTop
+            let y = Math.round(e.clientY - canvasDimentions.y - square.current.offsetTop)
+
             if (e.clientY < canvasDimentions.y + canvasDimentions.height) {
                 setcrop({ ...crop, sourceH: y })
             }
@@ -185,23 +157,18 @@ export default function Test({ canvasDimentions }) {
     }
 
     function ExtendTop(e) {
-        let y = dim.y - e.clientY + canvasDimentions.y + dim.height
+        let y = Math.round(dim.y - e.clientY + canvasDimentions.y + dim.height)
         if (e.clientY > canvasDimentions.y) {
-            setcrop({ ...crop, sourceH: y, offsetY: e.clientY - canvasDimentions.y })
+            setcrop({ ...crop, sourceH: y, offsetY: Math.round(e.clientY - canvasDimentions.y) })
         }
     }
-const Textstyle = {
-    color : crop.color ,
-    fontSize : crop.size ,
-    fontWeight : crop.weight
-
-}
+   
     return (
         <>
-            <div className='square' style={style} ref={square} onDragOver={Drag} >
-            <input style={Textstyle} type="text" value={crop.text} onChange={(e) => setcrop({ ...crop, text: e.target.value })} />
-                <div className='hidden' draggable={true} onDragStart={DragStart} onDragEnd={Drag} >
-                   
+            <div className='square' style={style} ref={square}  >
+
+                <div className='hidden' draggable={true} onDragStart={(e) => DragStart(e, canvasDimentions, square.current, setDim, dim)} onDrag={(e) =>  Drag(e, canvasDimentions, crop.sourceW,crop.sourceH,setcrop,crop,dim)} onDragEnd={(e) => Drag(e, canvasDimentions, crop.sourceW,crop.sourceH,setcrop,crop,dim)} >
+
                 </div>
                 <div className='corners BR' draggable={true} onDragStart={ExtendBottomRightStart} onDrag={ExtendBottomRight} ></div>
                 <div className='corners BL' draggable={true} onDragStart={ExtendBottomLeftStart} onDrag={ExtendBottomLeft}  ></div>

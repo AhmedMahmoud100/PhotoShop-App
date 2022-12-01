@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import './ImgSection.scss'
 import CropSquare from '../CropSquare/CropSquare'
 import { ThemeContext } from '../../context/ThemeContext'
+import { Drag, DragStart } from '../../Functions/Crop'
 
 export default function ImgSection(props) {
   const [imgSrc, setImgSrc] = useState('')
@@ -15,16 +16,26 @@ export default function ImgSection(props) {
   const [canvasInfo, setCanvasInfo] = useState({})
   const ctxRef = useRef()
   const NewctxRef = useRef()
+  const imgDataRef = useRef()
   const [drawing, setdrawing] = useState(false)
   const container = useRef()
+  const [text, setText] = useState('text')
+  const textInput = useRef()
   const sticker = useRef()
-  const [stickerPosition, setStickerPosition] = useState(
+  const [dragPosition, setDragPosition] = useState(
     {
-      x: 0,
-      y: 0
+      offsetX: 0,
+      offsetY: 0
     }
   )
-
+  const [boxPosition, setBoxPosition] = useState({
+    top: 50,
+    left: 50,
+    color: 'black'
+  })
+  const [colorsArray, SetColorsArray] = useState([])
+  const [averageColor, setAverageColor] = useState('')
+  const [dim, setDim] = useState()
   function handleUpload() {
     setcropEffect({
       offsetX: 0,
@@ -45,7 +56,7 @@ export default function ImgSection(props) {
       setImgSrc(file.result)
     }
 
-    let ctx = canvas.current.getContext('2d')
+    let ctx = canvas.current.getContext('2d', { willReadFrequently: true })
     let Newctx = NewCanvas.current.getContext('2d')
     ctxRef.current = ctx
     NewctxRef.current = Newctx
@@ -215,27 +226,29 @@ export default function ImgSection(props) {
 
   function HandleText() {
     if (NewctxRef.current) {
-      MakeNewCanvas();
-      let textOffsetY = cropEffect.offsetY + props.textEffect.size
-      let maxTextWidth = cropEffect.sourceW + cropEffect.offsetX
       NewctxRef.current.fillStyle = `${props.textEffect.color}`
       NewctxRef.current.font = `${props.textEffect.weight} ${props.textEffect.size}px ${props.textEffect.font}`
-      NewctxRef.current.fillText(cropEffect.text, cropEffect.offsetX, textOffsetY, maxTextWidth)
+      NewctxRef.current.fillText(text, stickerPosition.x, stickerPosition.y + props.textEffect.size)
     }
   }
 
   useEffect(() => {
-    if (props.section === "text" && props.textEffect.addText) {
-      setcropEffect({ ...cropEffect, ...props.textEffect })
+    if (props.section === "text" && props.textEffect.apply) {
+      HandleText()
+      ConvertToTheOriginalCanvas(props.textEffect.apply);
+      textInput.current.style.display = 'none'
+      setDragPosition({ offsetX: 0, offsetY: 0 })
     }
   }, [props.textEffect])
-  useEffect(() => {
 
-    if (props.section === "text" && props.textEffect.apply) {
-      HandleText();
-      ConvertToTheOriginalCanvas(true)
-    }
-  }, [props, cropEffect])
+
+  const Textstyle = {
+    color: props.textEffect.color,
+    fontSize: props.textEffect.size,
+    fontWeight: props.textEffect.weight,
+    left: dragPosition.offsetX,
+    top: dragPosition.offsetY,
+  }
 
   function HandleBorder() {
     if (NewctxRef.current) {
@@ -301,30 +314,146 @@ export default function ImgSection(props) {
   useEffect(() => {
     HandleSticker();
     ConvertToTheOriginalCanvas(props.stickerEffect.apply)
+    if (props.stickerEffect.apply) {
+      setDragPosition({ x: 0, y: 0 })
+    }
   }, [props.stickerEffect])
 
 
-  function DragStart(e) {
-    e.dataTransfer.setDragImage(new Image(), 0, 0)
-  }
-
-  function Drag(e) {
-    let offsetX = e.clientX - canvasInfo.x;
-    let offsetY = e.clientY - canvasInfo.y;
-    if (offsetX < canvasInfo.width + props.stickerEffect.width && offsetY < canvasInfo.height + props.stickerEffect.height) {
-      setStickerPosition({
-        x: offsetX,
-        y: offsetY
-      })
-    }
-  }
 
   const stickerStyle = {
-    top: stickerPosition.y,
-    left: stickerPosition.x,
+    top: dragPosition.offsetY,
+    left: dragPosition.offsetX,
     width: +props.stickerEffect.width || 50,
     height: +props.stickerEffect.height || 40
   }
+
+  function HandleShape() {
+    if (NewctxRef.current) {
+      const frameImage = new Image(NewCanvas.current.width, NewCanvas.current.height);
+      frameImage.src = props.shapeEffect.src
+
+      frameImage.onload = function () {
+        NewctxRef.current.save()
+        NewctxRef.current.clearRect(0, 0, NewCanvas.current.width, NewCanvas.current.height)
+        if (props.shapeEffect.id == 2) {
+
+          const raduis = Math.min(NewCanvas.current.width, NewCanvas.current.height)
+          NewCanvas.current.width = NewCanvas.current.height = raduis
+          NewctxRef.current.drawImage(frameImage, 0, 0, raduis, raduis)
+        }
+        else {
+          NewCanvas.current.width = canvas.current.width
+          NewCanvas.current.height = canvas.current.height
+          NewctxRef.current.drawImage(frameImage, 0, 0, NewCanvas.current.width, NewCanvas.current.height)
+        }
+        NewctxRef.current.globalCompositeOperation = 'source-in'
+        NewctxRef.current.drawImage(canvas.current, 0, 0, NewCanvas.current.width, NewCanvas.current.height)
+        NewctxRef.current.restore()
+      }
+
+    }
+  }
+
+  useEffect(() => {
+    if (props.section === 'shape') {
+      HandleShape()
+      ConvertToTheOriginalCanvas(props.shapeEffect.apply)
+    }
+  }, [props.shapeEffect])
+
+
+
+  useEffect(() => {
+    if (props.section === 'color') {
+
+      ConvertToTheOriginalCanvas(true)
+    }
+  }, [props])
+
+  if (ctxRef.current) {
+    let imgData = ctxRef.current.getImageData(0, 0, canvas.current.width, canvas.current.height).data;
+    imgDataRef.current = imgData
+  }
+
+  function GetPixelColor(cols, offsetX, offsetY,) {
+
+    const pixelIndex = cols * offsetY + offsetX
+    const colorIndex = pixelIndex * 4
+    const PixelColor = {
+      red: imgDataRef.current[colorIndex],
+      green: imgDataRef.current[colorIndex + 1],
+      blue: imgDataRef.current[colorIndex + 2],
+      alpha: imgDataRef.current[colorIndex + 3]
+    }
+    return PixelColor
+  }
+
+  function GetPixel(e) {
+    let cols = canvas.current.width
+
+
+    let offsetX = Math.floor(e.clientX - canvasInfo.x)
+    let offsetY = Math.floor(e.clientY - canvasInfo.y)
+
+    let BoxOffsetX = Math.min(offsetX - 20, canvasInfo.width - 40);
+    BoxOffsetX = Math.max(BoxOffsetX, 0);
+
+    let BoxOffsetY = Math.min(offsetY - 20, canvasInfo.height - 40);
+    BoxOffsetY = Math.max(BoxOffsetY, 0);
+
+    let c = GetPixelColor(cols, offsetX, offsetY)
+
+    let colorString = `rgb(${c.red} ${c.green} ${c.blue} / ${c.alpha / 255})`
+    setBoxPosition({ top: BoxOffsetY, left: BoxOffsetX, color: colorString })
+    getAverage(cols, offsetX, offsetY)
+
+  }
+
+
+  function getAverage(cols, offsetX, offsetY) {
+    let reds = 0;
+    let greens = 0;
+    let blues = 0;
+    let alphas = 0;
+
+    for (let x = -20; x <= 20; x++) {
+      for (let y = -20; y <= 20; y++) {
+        let c = GetPixelColor(cols, offsetX + x, offsetY + y);
+        reds += c.red;
+        greens += c.green;
+        blues += c.blue;
+        alphas += c.alpha
+      }
+    }
+    let nums = 41 * 41;
+    let red = Math.round(reds / nums)
+    let green = Math.round(greens / nums)
+    let blue = Math.round(blues / nums)
+    let alpha = Math.round(alphas / nums)
+    let colorString = `rgb(${red} ${green} ${blue} / ${alpha / 255})`
+    setAverageColor(colorString)
+  }
+
+  function AddBox() {
+    let newArray = colorsArray
+    const newColor =
+    {
+      color: boxPosition.color,
+      avergColor: averageColor
+    }
+
+    newArray.push(newColor)
+    SetColorsArray([...newArray])
+
+  }
+
+  const PointerStyle = {
+    top: boxPosition.top,
+    left: boxPosition.left,
+    backgroundColor: boxPosition.color
+  }
+
 
   return (
     <div className='imgSection'>
@@ -339,10 +468,12 @@ export default function ImgSection(props) {
 
           <img src={imgSrc} ref={img} width='300px' height='250px' ></img>
 
-          <canvas ref={canvas} id="canvas" className={props.showBorder && !cropEffect.apply ? "blur" : "normal"} ></canvas>
+          <canvas ref={canvas} id="canvas" className={props.showBorder && !cropEffect.apply ? "blur" : "normal"} onMouseMove={props.section == "color" ? GetPixel : null}  ></canvas>
           <canvas ref={NewCanvas} onMouseDown={props.section === "draw" ? (e) => DrawStart(e, props.drawEffect.fontSize, props.drawEffect.fontColor, props.drawEffect.shadowSize, props.drawEffect.shadowColor) : null} onMouseMove={props.section === "draw" ? Draw : null} onMouseUp={props.section === "draw" ? DrawEnd : null}></canvas>
           {props.showBorder && !cropEffect.apply || cropEffect.addText ? <CropSquare canvasDimentions={canvasInfo} /> : null}
-          {props.section === 'sticker' ? <img src={props.stickerEffect.src} ref={sticker} className='sticker' draggable={true} onDragStart={DragStart} onDragEnd={Drag} style={stickerStyle} ></img> : null}
+          {props.section === 'text' ? <input className='text' type="text" style={Textstyle} value={text} onChange={(e) => setText(e.target.value)} onDragStart={(e) => DragStart(e, canvasInfo, textInput.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.textEffect.size * 2, props.textEffect.size * 1.2, setDragPosition,dragPosition, dim)} ref={textInput} ></input> : null}
+          {props.section === 'sticker' ? <img src={props.stickerEffect.src} ref={sticker} className='sticker' draggable={true} onDragStart={(e) => DragStart(e, canvasInfo, sticker.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.stickerEffect.width, props.stickerEffect.height, setDragPosition,dragPosition,dim)} style={stickerStyle}  ></img> : null}
+          {props.section === 'color' ? <div className="pointerBox" style={PointerStyle} onClick={props.section == "color" ? AddBox : null}></div> : null}
 
         </div>
 
@@ -357,7 +488,20 @@ export default function ImgSection(props) {
           <a download={true} id="download" onClick={handleDownload} ref={download}>Download</a>
         </div>
       </div>
-
+      {props.section == 'color' && <div className='colorsContainer'>
+        {colorsArray.map((e, i) => {
+          return <div key={i} className='box'>
+            <div style={{ backgroundColor: e.color }}  >
+              <span>Exact Pixel</span>
+              <span>{e.color}</span>
+            </div>
+            <div style={{ backgroundColor: e.avergColor }}  >
+              <span>average Color</span>
+              <span>{e.avergColor}</span>
+            </div>
+          </div>
+        })}
+      </div>}
     </div>
   )
 }
