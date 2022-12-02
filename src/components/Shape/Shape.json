@@ -1,42 +1,42 @@
 [
     {
         "id": 0,
-        "src": "/public/shape-0.png"
+        "src": "/shape-0.png"
     },
     {
         "id": 1,
-        "src": "/public/shape-1.png"
+        "src": "/shape-1.png"
     },
     {
         "id": 2,
-        "src": "/public/shape-2.png"
+        "src": "/shape-2.png"
     },
     {
         "id": 3,
-        "src": "/public/shape-3.png"
+        "src": "/shape-3.png"
     },
     {
         "id": 4,
-        "src": "/public/shape-4.png"
+        "src": "/shape-4.png"
     },
     {
         "id": 5,
-        "src": "/public/shape-5.png"
+        "src": "/shape-5.png"
     },
     {
         "id": 6,
-        "src": "/public/shape-6.png"
+        "src": "/shape-6.png"
     },
     {
         "id": 7,
-        "src": "/public/shape-7.png"
+        "src": "/shape-7.png"
     },
     {
         "id": 8,
-        "src": "/public/shape-8.png"
+        "src": "/shape-8.png"
     },
     {
         "id": 9,
-        "src": "/public/shape-9.png"
+        "src": "/shape-9.png"
     }
 ]

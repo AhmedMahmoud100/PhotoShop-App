@@ -1,18 +1,17 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import './ImgSection.scss'
-import CropSquare from '../CropSquare/CropSquare'
+import CropArea from '../CropArea/CropArea'
 import { ThemeContext } from '../../context/ThemeContext'
 import { Drag, DragStart } from '../../Functions/Crop'
-
+import { useLocation } from 'react-router-dom'
 export default function ImgSection(props) {
+  const { state } = useLocation();
   const [imgSrc, setImgSrc] = useState('')
   const uploadInput = useRef()
-  const img = useRef()
   const canvas = useRef()
   const download = useRef()
   const [cropEffect, setcropEffect] = useContext(ThemeContext)
   const NewCanvas = useRef()
-  const [first, setfirst] = useState(true)
   const [canvasInfo, setCanvasInfo] = useState({})
   const ctxRef = useRef()
   const NewctxRef = useRef()
@@ -36,6 +35,39 @@ export default function ImgSection(props) {
   const [colorsArray, SetColorsArray] = useState([])
   const [averageColor, setAverageColor] = useState('')
   const [dim, setDim] = useState()
+
+  useEffect(() => {
+    setImgSrc(state.src)
+  }, [state])
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = imgSrc
+    let ctx = canvas.current.getContext('2d', { willReadFrequently: true })
+    let Newctx = NewCanvas.current.getContext('2d')
+    ctxRef.current = ctx
+    NewctxRef.current = Newctx
+
+    image.onload = function () {
+
+      canvas.current.width = image.naturalWidth;
+      canvas.current.height = image.naturalHeight;
+      canvas.current.style.display = "block"
+      NewCanvas.current.style.display = "none"
+
+
+      ctx.drawImage(image, 0, 0, canvas.current.width, canvas.current.height);
+      MakeNewCanvas();
+      props.imgDimentions(
+        {
+          width: image.naturalWidth,
+          height: image.naturalHeight
+        }
+      )
+    }
+  }, [imgSrc])
+
+
   function handleUpload() {
     setcropEffect({
       offsetX: 0,
@@ -56,23 +88,8 @@ export default function ImgSection(props) {
       setImgSrc(file.result)
     }
 
-    let ctx = canvas.current.getContext('2d', { willReadFrequently: true })
-    let Newctx = NewCanvas.current.getContext('2d')
-    ctxRef.current = ctx
-    NewctxRef.current = Newctx
-
-    img.current.onload = function () {
-      setfirst(false)
-      canvas.current.width = img.current.width;
-      canvas.current.height = img.current.height;
-      canvas.current.style.display = "block"
-      NewCanvas.current.style.display = "none"
-      img.current.style.display = "none"
-
-      ctx.drawImage(img.current, 0, 0, canvas.current.width, canvas.current.height);
-      MakeNewCanvas();
-    }
   }
+
 
   useEffect(() => {
     setcropEffect({
@@ -261,7 +278,7 @@ export default function ImgSection(props) {
       NewctxRef.current.strokeStyle = props.borderEffect.color;
       NewctxRef.current.lineWidth = props.borderEffect.width
       NewctxRef.current.strokeRect(0, 0, newWidth, newHeight)
-      NewctxRef.current.drawImage(img.current, props.borderEffect.width / 2, props.borderEffect.width / 2, canvas.current.width + props.borderEffect.width, canvas.current.height + props.borderEffect.width)
+      NewctxRef.current.drawImage(canvas.current, props.borderEffect.width / 2, props.borderEffect.width / 2, canvas.current.width + props.borderEffect.width, canvas.current.height + props.borderEffect.width)
     }
   }
 
@@ -457,35 +474,27 @@ export default function ImgSection(props) {
 
   return (
     <div className='imgSection'>
-      <div className="up">
-        <div className={first ? "first active" : "first hidden"}>
-          <h2>Photo Editor</h2>
-          <p> welcome to the free modern photo editor ,start editing by clicking on
-            the open photo button.
-          </p>
-        </div>
-        <div className={first ? "image hidden" : "image active"} ref={container} >
 
-          <img src={imgSrc} ref={img} width='300px' height='250px' ></img>
+      <div className="imgContainer">
+        <div className="image active" ref={container} >
 
           <canvas ref={canvas} id="canvas" className={props.showBorder && !cropEffect.apply ? "blur" : "normal"} onMouseMove={props.section == "color" ? GetPixel : null}  ></canvas>
           <canvas ref={NewCanvas} onMouseDown={props.section === "draw" ? (e) => DrawStart(e, props.drawEffect.fontSize, props.drawEffect.fontColor, props.drawEffect.shadowSize, props.drawEffect.shadowColor) : null} onMouseMove={props.section === "draw" ? Draw : null} onMouseUp={props.section === "draw" ? DrawEnd : null}></canvas>
-          {props.showBorder && !cropEffect.apply || cropEffect.addText ? <CropSquare canvasDimentions={canvasInfo} /> : null}
-          {props.section === 'text' ? <input className='text' type="text" style={Textstyle} value={text} onChange={(e) => setText(e.target.value)} onDragStart={(e) => DragStart(e, canvasInfo, textInput.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.textEffect.size * 2, props.textEffect.size * 1.2, setDragPosition,dragPosition, dim)} ref={textInput} ></input> : null}
-          {props.section === 'sticker' ? <img src={props.stickerEffect.src} ref={sticker} className='sticker' draggable={true} onDragStart={(e) => DragStart(e, canvasInfo, sticker.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.stickerEffect.width, props.stickerEffect.height, setDragPosition,dragPosition,dim)} style={stickerStyle}  ></img> : null}
+          {props.showBorder && !cropEffect.apply || cropEffect.addText ? <CropArea canvasDimentions={canvasInfo} /> : null}
+          {props.section === 'text' ? <input className='text' type="text" style={Textstyle} value={text} onChange={(e) => setText(e.target.value)} onDragStart={(e) => DragStart(e, canvasInfo, textInput.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.textEffect.size * 2, props.textEffect.size * 1.2, setDragPosition, dragPosition, dim)} ref={textInput} ></input> : null}
+          {props.section === 'sticker' ? <img src={props.stickerEffect.src} ref={sticker} className='sticker' draggable={true} onDragStart={(e) => DragStart(e, canvasInfo, sticker.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.stickerEffect.width, props.stickerEffect.height, setDragPosition, dragPosition, dim)} style={stickerStyle}  ></img> : null}
           {props.section === 'color' ? <div className="pointerBox" style={PointerStyle} onClick={props.section == "color" ? AddBox : null}></div> : null}
 
         </div>
-
       </div>
 
       <div className='img-buttons'>
         <div className='upload' >
-          <label htmlFor="upload" >upload</label>
+          <label htmlFor="upload" >Upload Another Image</label>
           <input type="file" id='upload' onChange={handleUpload} ref={uploadInput} />
         </div>
         <div className='download'>
-          <a download={true} id="download" onClick={handleDownload} ref={download}>Download</a>
+          <a download={true} id="download" onClick={handleDownload} ref={download}>Download The image</a>
         </div>
       </div>
       {props.section == 'color' && <div className='colorsContainer'>

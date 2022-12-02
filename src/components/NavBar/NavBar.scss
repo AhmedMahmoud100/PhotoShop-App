@@ -1,13 +1,16 @@
 .navBar {
     background-color: white;
-    box-shadow: 2px 3px 5px 4px rgb(0 0 0 / 10%);
+    box-shadow: 0px 4px 8px 3px rgb(3 32 74 / 50%);
+    background-color: rgb(3 32 74 / 90%);
     display: flex;
     justify-content: center;
     padding: 10px;
+
     ul {
         list-style: none;
         display: flex;
         gap: 20px;
+        color: rgb(0 167 255);
 
         li {
             display: flex;
@@ -16,7 +19,8 @@
             gap: 10px;
             cursor: pointer;
 
-            svg,span {
+            svg,
+            span {
                 pointer-events: none;
             }
         }

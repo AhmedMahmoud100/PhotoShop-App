@@ -1,0 +1,52 @@
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(3 23 51 / 0.9);
+    padding: 0 20px;
+
+    .logo {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        position: relative;
+        height: 55px;
+
+        img {
+            width: 70px;
+            position: absolute;
+        }
+
+        h2 {
+            color: rgb(70 190 253 / 1);
+            font-size: 25px;
+            padding-left: 70px;
+        }
+
+    }
+
+    .right {
+        display: flex;
+        gap: 20px;
+        color: rgb(70 190 253 / 1);
+        font-size: 16px;
+       
+
+        div {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .test {
+            padding: 7px 12px;
+            background-color: #000b9d;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 0.7px;
+        }
+    }
+
+}

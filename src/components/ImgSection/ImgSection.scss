@@ -5,9 +5,16 @@
     gap: 20px;
     align-items: center;
     flex: 3;
+    background-color: rgba(3, 32, 74, 0.9);
+    color: rgb(0, 167, 255);
+    background-image: url('/empty.jpg');
+    background-size: cover;
+    min-height: 80vh;
+    // background-repeat: no-repeat;
 
 
-    .up {
+
+    .imgContainer {
         position: relative;
 
         .first {
@@ -18,11 +25,13 @@
 
             h2 {
                 font-size: 40px;
+                width: 600px;
             }
 
             p {
-                font-size: 30px;
-                padding: 0 40px;
+                font-size: 26px;
+                width: 600px;
+                opacity: 0.9;
             }
 
             &.active {
@@ -67,6 +76,7 @@
                 user-select: none;
                 color: transparent;
             }
+
         }
 
         .pointerBox {
@@ -92,19 +102,17 @@
             }
 
             label {
-                padding: 8px 20px;
-                border: 2px black dashed;
+                padding: 10px 22px;
                 cursor: pointer;
+                background-color: rgba(3, 32, 74, 0.9);
             }
         }
 
         .download {
-            border: 2px solid black;
-            padding: 8px 20px;
+            padding: 10px 22px;
             cursor: pointer;
-
+            background-color: rgba(3, 32, 74, 0.9)
         }
-
 
     }
 

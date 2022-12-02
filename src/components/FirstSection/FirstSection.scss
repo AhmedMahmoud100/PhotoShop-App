@@ -1,0 +1,74 @@
+.firstSection {
+    background-image: url('/photo-shop.png');
+    height: calc(100vh - 55px);
+    width: 100vw;
+    background-size: cover;
+
+    h2 {
+        text-align: center;
+        padding-top: 10px;
+        font-size: 30px;
+    }
+
+    .overLay {
+        background-color: rgb(70 190 253 / 30%);
+        width: fit-content;
+        padding: 20px;
+        margin: 20px;
+        color: rgb(70 190 253 / 1);
+        color: black;
+
+        h3 {
+            font-size: 16px;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px 20px;
+
+            li {
+                font-size: 16px;
+            }
+
+            .upload {
+                align-self: center;
+                margin-top: 10px;
+
+                input {
+                    display: none;
+                }
+
+                label {
+
+                    width: fit-content;
+                    font-size: 16px;
+                    padding: 10px 20px;
+                    background-color: rgba(3, 32, 74, 0.9);
+                    color: rgb(0, 167, 255);
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+                &:hover {
+                    background-color: #000068;
+                }
+            }
+
+            // button {
+            //     margin-top: 10px;
+            //     align-self: center;
+            //     width: fit-content;
+            //     font-size: 16px;
+            //     padding: 10px 20px;
+            //     background-color: rgba(3, 32, 74, 0.9);
+            //     color: rgb(0, 167, 255);
+            //     border-radius: 5px;
+            //     cursor: pointer;
+
+                
+            // }
+        }
+    }
+}

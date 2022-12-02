@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import './Resize.scss'
 
-export default function Resize({ resizeEffect }) {
+export default function Resize({ resizeEffect, imgDimentions }) {
     const [checkValue, setcheckValue] = useState(false)
     const [width, setWidth] = useState(300)
     const [height, setHeight] = useState(200)
 
+    const AspectRatio = imgDimentions.width / imgDimentions.height
+
     function HandleHeight(e) {
         setHeight(e.target.value)
         if (checkValue) {
-            let newWidth = 16 / 9 * e.target.value
+            let newWidth = AspectRatio * e.target.value
             setWidth(newWidth)
 
         }
@@ -18,7 +20,7 @@ export default function Resize({ resizeEffect }) {
     function HandleWidth(e) {
         setWidth(e.target.value)
         if (checkValue) {
-            let newHeight = 9 / 16 * e.target.value
+            let newHeight = e.target.value / AspectRatio
             setHeight(newHeight)
         }
     }
@@ -26,14 +28,13 @@ export default function Resize({ resizeEffect }) {
     function handlecheckValue(e) {
         setcheckValue(e.target.checked)
         if (e.target.checked) {
-            let newHeight = 9 / 16 * width
+            let newHeight = width / AspectRatio
             setHeight(newHeight)
-
         }
     }
 
     function handleResize() {
-        resizeEffect({ width: width, height: height,apply:true })
+        resizeEffect({ width: width, height: height, apply: true })
     }
 
     return (

@@ -1,9 +1,9 @@
 import React, { useState, useContext, useRef } from 'react'
 import { ThemeContext } from '../../context/ThemeContext'
-import './CropSquare.scss'
+import './CropArea.scss'
 import { Drag, DragStart } from '../../Functions/Crop'
 
-export default function Test({ canvasDimentions }) {
+export default function CropArea({ canvasDimentions }) {
     const [crop, setcrop] = useContext(ThemeContext)
     const square = useRef()
     const [dim, setDim] = useState({
