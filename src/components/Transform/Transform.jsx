@@ -2,29 +2,35 @@ import { useState } from 'react'
 import './Transform.scss'
 
 export default function Transform({ rotateEffect }) {
-  const [rotateDegree, setRotateDegree] = useState({
-    deg: 0,
-    apply: false
-  })
-  function HandleRotate(e) {
-    setRotateDegree(setRotateDegree({ deg: e.target.value, apply: false }))
+  const [rotateDegree, setRotateDegree] = useState(0)
 
-  }
-  function Apply() {
-    rotateEffect({ deg: rotateDegree.deg, apply: true })
+  function HandleRotate(e) {
+    setRotateDegree(e.target.value)
+    rotateEffect(e.target.value)
   }
 
   return (
     <div className='transform'>
-      <h2>ROTATE IMAGE</h2>
+      <h2>ROTATE</h2>
       <div className='inputField'>
         <label htmlFor="rotate">Rotate degree</label>
-        <input type="number" id='rotate' value={rotateDegree.deg} onChange={HandleRotate} />
+        <input type="number" id='rotate' value={rotateDegree} onChange={HandleRotate} />
       </div>
-      <button onClick={() => setRotateDegree({ deg: 45, apply: false })}>Rotate 45</button>
-      <button onClick={() => setRotateDegree({ deg: 90, apply: false })}>Rotate 90</button>
-      <button onClick={() => setRotateDegree({ deg: 180, apply: false })}>Rotate 180</button>
-      <button onClick={Apply}>Apply</button>
+      <button onClick={() => {
+        setRotateDegree(45)
+        rotateEffect(45)
+      }
+      }>Rotate 45</button>
+      <button onClick={() => {
+        setRotateDegree(90)
+        rotateEffect(90)
+      }
+      }>Rotate 90</button>
+      <button onClick={() => {
+        setRotateDegree(180)
+        rotateEffect(180)
+      }
+      }>Rotate 180</button>
     </div>
   )
 }

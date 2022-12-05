@@ -10,44 +10,28 @@ function Crop() {
         setCrop({ ...crop, [target]: e.target.value, apply: false })
     }
 
-    function PassCropTheme(e) {
-        e.preventDefault()
-        setCrop({ ...crop, apply: true })
-    }
-    function ResetCrop() {
-        setCrop({
-            offsetX: 0,
-            offsetY: 0,
-            sourceW: 150,
-            sourceH: 150,
-            apply: false,
-        })
-    }
     return (
         <div className='crop'>
             <h2>Crop</h2>
             <p>Drag the red box inside the image or change values below.</p>
-            <form onSubmit={PassCropTheme} >
+            <form >
                 <div>
-                    <label htmlFor="sourceW">width</label>
+                    <label htmlFor="sourceW">width(px)</label>
                     <input type="number" id='sourceW' onChange={HandleCrop} value={crop.sourceW} />
                 </div>
                 <div>
-                    <label htmlFor="sourceH">height</label>
+                    <label htmlFor="sourceH">height(px)</label>
                     <input type="number" id='sourceH' onChange={HandleCrop} value={crop.sourceH} />
                 </div>
                 <div>
-                    <label htmlFor="offsetX">Offset-X</label>
+                    <label htmlFor="offsetX">Offset-X(px)</label>
                     <input type="number" id='offsetX' onChange={HandleCrop} value={crop.offsetX} />
                 </div>
                 <div>
-                    <label htmlFor="offsetY">Offset-y</label>
+                    <label htmlFor="offsetY">Offset-y(px)</label>
                     <input type="number" id='offsetY' onChange={HandleCrop} value={crop.offsetY} />
                 </div>
-                <button type='submit'>apply</button>
             </form>
-            <button onClick={ResetCrop}>Reset</button>
-
         </div>
     )
 }

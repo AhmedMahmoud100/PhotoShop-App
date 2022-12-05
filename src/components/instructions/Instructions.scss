@@ -3,7 +3,14 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    font-size: 20px;
-    flex: 1;
-    background-color: antiquewhite;
+    font-size: 18px;
+   
+    color:rgb(0, 167, 255) ;
+
+    p{
+        span {
+            color: #76f576;
+        }
+    }
+    
 }

@@ -55,11 +55,9 @@ export default function Filter({ filtersEffect }) {
         ConvertToStyle(initialValue)
     }
 
-    function Apply() {
-        filtersEffect({ ...theme, apply: true })
-    }
     return (
         <div className='filters '>
+            <h2>Filters</h2>
             <ul>
                 <li>
                     <label htmlFor="saturate">saturate</label>
@@ -91,7 +89,6 @@ export default function Filter({ filtersEffect }) {
                 </li>
                 <li>
                     <button onClick={HandleReset}>Reset</button>
-                    <button onClick={Apply}>Apply</button>
                 </li>
             </ul>
         </div>

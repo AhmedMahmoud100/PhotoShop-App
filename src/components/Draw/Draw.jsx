@@ -13,7 +13,24 @@ export default function Draw({ drawEffect }) {
         shadowLength: 0,
         apply: false
     })
-
+    const [fontColor, setFontColor] = useState(
+        {
+            first: '#FFFFFF',
+            second: '#FF0000',
+            third: '#00FF00',
+            fourth: '#0000FF',
+            fifth: '#FFFF00'
+        }
+    )
+    const [shadowColor, setShadowColor] = useState(
+        {
+            first: '#FFFFFF',
+            second: '#FF0000',
+            third: '#00FF00',
+            fourth: '#0000FF',
+            fifth: '#FFFF00'
+        }
+    )
     useEffect(() => {
         let XBoundary = container.current.getBoundingClientRect().width
         setBoundary(XBoundary)
@@ -41,14 +58,14 @@ export default function Draw({ drawEffect }) {
     }
 
     function HandleFontColor(e) {
-        let color = e.target.id;
-        setDrawProprties({ ...drawProprties, fontColor: color })
-        drawEffect({ ...drawProprties, fontColor: color })
+        setFontColor({ ...fontColor, [e.target.name]: e.target.value });
+        setDrawProprties({ ...drawProprties, fontColor: e.target.value })
+        drawEffect({ ...drawProprties, fontColor: e.target.value })
     }
     function HandleShadowColor(e) {
-        let color = e.target.id;
-        setDrawProprties({ ...drawProprties, shadowColor: color })
-        drawEffect({ ...drawProprties, shadowColor: color })
+        setShadowColor({ ...shadowColor, [e.target.name]: e.target.value });
+        setDrawProprties({ ...drawProprties, shadowColor: e.target.value })
+        drawEffect({ ...drawProprties, shadowColor: e.target.value })
     }
     return (
         <div className='draw' ref={container}>
@@ -70,15 +87,26 @@ export default function Draw({ drawEffect }) {
                     </div>
                 </div>
             </div>
-            <div className='colorsSection'>
-                <h3> Font Color</h3>
-                <div className='colorsContainer'>
-                    <div className={drawProprties.fontColor === "white" ? "active" : null} id="white" onClick={HandleFontColor}></div>
-                    <div className={drawProprties.fontColor === "orange" ? "active" : null} id="orange" onClick={HandleFontColor}></div>
-                    <div className={drawProprties.fontColor === "green" ? "active" : null} id="green" onClick={HandleFontColor}></div>
-                    <div className={drawProprties.fontColor === "black" ? "active" : null} id="black" onClick={HandleFontColor}></div>
-                    <div className={drawProprties.fontColor === "red" ? "active" : null} id="red" onClick={HandleFontColor}></div>
-                    <div className={drawProprties.fontColor === "blue" ? "active" : null} id="blue" onClick={HandleFontColor}></div>
+            <div className='custom-color'>
+
+                <h3>Font Color</h3>
+
+                <div className='colors-container'>
+                    <div className={fontColor.first === drawProprties.fontColor ? 'active' : null}>
+                        <input type="color" name="first" value={fontColor.first} onChange={HandleFontColor} />
+                    </div>
+                    <div className={fontColor.second === drawProprties.fontColor ? 'active' : null}>
+                        <input type="color" name='second' value={fontColor.second} onChange={HandleFontColor} />
+                    </div>
+                    <div className={fontColor.third === drawProprties.fontColor ? 'active' : null}>
+                        <input type="color" name='third' value={fontColor.third} onChange={HandleFontColor} />
+                    </div>
+                    <div className={fontColor.fourth === drawProprties.fontColor ? 'active' : null}>
+                        <input type="color" name='fourth' value={fontColor.fourth} onChange={HandleFontColor} />
+                    </div>
+                    <div className={fontColor.fifth === drawProprties.fontColor ? 'active' : null}>
+                        <input type="color" name='fifth' value={fontColor.fifth} onChange={HandleFontColor} />
+                    </div>
                 </div>
             </div>
             <div className='shadowProp'>
@@ -96,18 +124,29 @@ export default function Draw({ drawEffect }) {
                     </div>
                 </div>
             </div>
-            <div className='colorsSection'>
-                <h3> Shadow Color</h3>
-                <div className='colorsContainer'>
-                    <div className={drawProprties.shadowColor === "white" ? "active" : null} id="white" onClick={HandleShadowColor}></div>
-                    <div className={drawProprties.shadowColor === "orange" ? "active" : null} id="orange" onClick={HandleShadowColor}></div>
-                    <div className={drawProprties.shadowColor === "green" ? "active" : null} id="green" onClick={HandleShadowColor}></div>
-                    <div className={drawProprties.shadowColor === "black" ? "active" : null} id="black" onClick={HandleShadowColor}></div>
-                    <div className={drawProprties.shadowColor === "red" ? "active" : null} id="red" onClick={HandleShadowColor}></div>
-                    <div className={drawProprties.shadowColor === "blue" ? "active" : null} id="blue" onClick={HandleShadowColor}></div>
+            <div className='custom-color'>
+
+                <h3>Shadow Color</h3>
+
+                <div className='colors-container'>
+                    <div className={shadowColor.first === drawProprties.shadowColor ? 'active' : null}>
+                        <input type="color" name="first" value={shadowColor.first} onChange={HandleShadowColor} />
+                    </div>
+                    <div className={shadowColor.second === drawProprties.shadowColor ? 'active' : null}>
+                        <input type="color" name='second' value={shadowColor.second} onChange={HandleShadowColor} />
+                    </div>
+                    <div className={shadowColor.third === drawProprties.shadowColor ? 'active' : null}>
+                        <input type="color" name='third' value={shadowColor.third} onChange={HandleShadowColor} />
+                    </div>
+                    <div className={shadowColor.fourth === drawProprties.shadowColor ? 'active' : null}>
+                        <input type="color" name='fourth' value={shadowColor.fourth} onChange={HandleShadowColor} />
+                    </div>
+                    <div className={shadowColor.fifth === drawProprties.shadowColor ? 'active' : null}>
+                        <input type="color" name='fifth' value={shadowColor.fifth} onChange={HandleShadowColor} />
+                    </div>
                 </div>
             </div>
-            <button onClick={() => drawEffect({ ...drawProprties, apply: true })}>Apply</button>
+
         </div>
     )
 }

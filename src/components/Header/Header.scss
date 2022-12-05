@@ -4,6 +4,7 @@
     align-items: center;
     background-color: rgb(3 23 51 / 0.9);
     padding: 0 20px;
+    position: relative;
 
     .logo {
         display: flex;
@@ -30,13 +31,24 @@
         gap: 20px;
         color: rgb(70 190 253 / 1);
         font-size: 16px;
-       
 
-        div {
+        a {
             display: flex;
             gap: 2px;
             align-items: center;
             cursor: pointer;
+            color: rgb(70 190 253 / 1);
+            text-decoration: none;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: rgb(70 190 253 / 1);
+            background-color: transparent;
+            font-size: 16px;
+            border: none;
         }
 
         .test {
@@ -48,5 +60,4 @@
             letter-spacing: 0.7px;
         }
     }
-
 }

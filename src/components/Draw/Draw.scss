@@ -4,12 +4,7 @@
     gap: 20px;
     align-items: center;
     flex: 1;
-    background-color: antiquewhite;
     padding-bottom: 20px;
-
-    h2 {
-        font-size: 30px;
-    }
 
     .fontProp,.shadowProp {
         display: flex;
@@ -64,58 +59,46 @@
         }
     }
 
-    .colorsSection {
+    .custom-color {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
+        width: 100%;
         align-items: center;
+        flex-direction: column;
+        gap: 20px;
 
-        .colorsContainer {
+        h3 {
+            font-size: 20px;
+        }
+
+        .colors-container {
             display: flex;
             gap: 10px;
-            align-items: center;
 
             div {
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
-                cursor: pointer;
+                overflow: hidden;
 
                 &.active {
-                    width: 40px;
-                    height: 40px;
+                    width: 35px;
+                    height: 35px;
+                }
+
+                input {
+                    border: 0;
+                    padding: 0;
+                    width: 200%;
+                    height: 200%;
+                    cursor: pointer;
+                    transform: translate(-25%, -25%)
                 }
             }
-
-            #white {
-                background-color: white;
-            }
-
-            #red {
-                background-color: red;
-            }
-
-            #green {
-                background-color: green;
-            }
-
-            #blue {
-                background-color: blue;
-            }
-
-            #black {
-                background-color: black;
-            }
-
-            #orange {
-                background-color: orange;
-            }
-
         }
     }
 
     button {
-        font-size: 20px;
+        font-size: 16px;
         padding: 5px 20px;
     }
 }

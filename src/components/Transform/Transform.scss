@@ -2,27 +2,32 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 20px;
-    font-size: 20px;
+    padding: 0 20px;
+    font-size: 16px;
     flex: 1;
-    background-color: antiquewhite;
-
-    h2{
-        font-size: 30px;
-    }
+    align-items: center;
     .inputField{
         display: flex;
         justify-content: space-between;
-        font-size: 25px;
+        font-size: 20px;
+        width: 100%;
+        gap: 5px;
+        align-items: center;
         }   
 
         input {
-            width: 80px;
+            width: 50px;
             padding: 5px;
-            font-size: 20px;
+            font-size: 16px;
+            outline: none;
+            height: 28px;
+            background-color: blue;
+            color: white;
+            border: none;
             
     }
     button {
-        font-size: 20px;
+        font-size: 16px;
+        width: 100%;
     }
 }

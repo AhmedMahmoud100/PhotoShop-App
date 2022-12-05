@@ -16,7 +16,7 @@ export default function FirstSection() {
     }
     return (
         <div className='firstSection'>
-            <h2>Free Online Photo Shop</h2>
+            <h2>Free Online PhotoShop</h2>
             <div className='overLay'>
                 <h3>The Free Online Photo Shop lets you edit images ONLINE!</h3>
                 <ul>

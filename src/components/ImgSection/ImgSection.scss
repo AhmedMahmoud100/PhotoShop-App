@@ -1,18 +1,14 @@
 .imgSection {
-    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     align-items: center;
     flex: 3;
-    background-color: rgba(3, 32, 74, 0.9);
     color: rgb(0, 167, 255);
-    background-image: url('/empty.jpg');
+    background: url('/empty.jpg') rgba(3, 32, 74, 0.9);
+    background-blend-mode: multiply;
     background-size: cover;
     min-height: 80vh;
-    // background-repeat: no-repeat;
-
-
 
     .imgContainer {
         position: relative;
@@ -46,7 +42,6 @@
         .image {
 
             position: relative;
-            background-color: #f1ecec;
 
             &.active {
                 display: flex;
@@ -91,30 +86,7 @@
         width: 250px;
     }
 
-    .img-buttons {
-        display: flex;
-        gap: 20px;
-        align-items: center;
 
-        .upload {
-            input {
-                display: none;
-            }
-
-            label {
-                padding: 10px 22px;
-                cursor: pointer;
-                background-color: rgba(3, 32, 74, 0.9);
-            }
-        }
-
-        .download {
-            padding: 10px 22px;
-            cursor: pointer;
-            background-color: rgba(3, 32, 74, 0.9)
-        }
-
-    }
 
     .colorsContainer {
         display: flex;

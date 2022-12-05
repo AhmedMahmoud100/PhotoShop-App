@@ -4,10 +4,10 @@ import CropArea from '../CropArea/CropArea'
 import { ThemeContext } from '../../context/ThemeContext'
 import { Drag, DragStart } from '../../Functions/Crop'
 import { useLocation } from 'react-router-dom'
+
 export default function ImgSection(props) {
   const { state } = useLocation();
   const [imgSrc, setImgSrc] = useState('')
-  const uploadInput = useRef()
   const canvas = useRef()
   const download = useRef()
   const [cropEffect, setcropEffect] = useContext(ThemeContext)
@@ -37,8 +37,39 @@ export default function ImgSection(props) {
   const [dim, setDim] = useState()
 
   useEffect(() => {
-    setImgSrc(state.src)
-  }, [state])
+    setImgSrc(props.options.src)
+  }, [props.options.src])
+
+  useEffect(() => {
+    if (props.options.download) {
+      download.current.click();
+    }
+    if (props.options.save) {
+      ConvertToTheOriginalCanvas()
+    }
+    if (props.section === "text" && props.options.save) {
+      HandleText()
+      ConvertToTheOriginalCanvas()
+
+    }
+    if (props.section === "sticker" && props.options.save) {
+      HandleSticker()
+      ConvertToTheOriginalCanvas()
+    }
+    if ((props.section === "crop") && props.options.save) {
+      HandleCrop();
+      ConvertToTheOriginalCanvas()
+    }
+  }, [props.options])
+
+  useEffect(() => {
+    if (state.test === true) {
+      setImgSrc('/cat.png')
+    } else {
+      setImgSrc(state.src)
+    }
+
+  }, [])
 
   useEffect(() => {
     const image = new Image();
@@ -64,31 +95,16 @@ export default function ImgSection(props) {
           height: image.naturalHeight
         }
       )
+      // circle
+
+      NewctxRef.current.strokeStyle = 'red'
+      NewctxRef.current.lineWidth = '5'
+      NewctxRef.current.arc(180,320,25,0,Math.PI * 2)
+      NewctxRef.current.stroke()
+    
+     
     }
   }, [imgSrc])
-
-
-  function handleUpload() {
-    setcropEffect({
-      offsetX: 0,
-      offsetY: 0,
-      sourceW: 150,
-      sourceH: 150,
-      apply: false,
-      text: 'text',
-      font: "sans-serif",
-      weight: "400",
-      color: "red",
-      size: 20,
-    })
-    let file = new FileReader();
-    file.readAsDataURL(uploadInput.current.files[0]);
-
-    file.onload = function () {
-      setImgSrc(file.result)
-    }
-
-  }
 
 
   useEffect(() => {
@@ -134,14 +150,14 @@ export default function ImgSection(props) {
     }
   }, [props.section])
 
-  function ConvertToTheOriginalCanvas(option) {
-    if (option) {
-      NewCanvas.current.style.display = "none"
-      canvas.current.style.display = "block";
-      canvas.current.width = NewCanvas.current.width;
-      canvas.current.height = NewCanvas.current.height;
-      ctxRef.current.drawImage(NewCanvas.current, 0, 0, NewCanvas.current.width, NewCanvas.current.height);
-    }
+  function ConvertToTheOriginalCanvas() {
+
+    NewCanvas.current.style.display = "none"
+    canvas.current.style.display = "block";
+    canvas.current.width = NewCanvas.current.width;
+    canvas.current.height = NewCanvas.current.height;
+    ctxRef.current.drawImage(NewCanvas.current, 0, 0, NewCanvas.current.width, NewCanvas.current.height);
+
   }
 
   function HandleFilters() {
@@ -152,7 +168,6 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.section === "filter") {
       HandleFilters();
-      ConvertToTheOriginalCanvas(props.filtersEffect.apply);
     }
   }, [props.filtersEffect])
 
@@ -165,12 +180,13 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.section === "resize") {
       HandleResize();
-      ConvertToTheOriginalCanvas(props.resizeEffect.apply);
+
     }
   }, [props.resizeEffect])
 
   function HandleRotate() {
-    const rad = props.rotateEffect.deg * Math.PI / 180
+    NewctxRef.current.clearRect(0, 0, canvas.current.width, canvas.current.height)
+    const rad = props.rotateEffect * Math.PI / 180
     const width = canvas.current.width;
     const height = canvas.current.height
     NewctxRef.current.translate(width / 2, height / 2)
@@ -183,7 +199,6 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.section === "transform") {
       HandleRotate();
-      ConvertToTheOriginalCanvas(props.rotateEffect.apply);
     }
   }, [props.rotateEffect])
 
@@ -198,20 +213,6 @@ export default function ImgSection(props) {
     NewctxRef.current.drawImage(canvas.current, offsetX, offsetY, sourceW, sourceH, 0, 0, sourceW, sourceH);
   }
 
-  useEffect(() => {
-    if (props.section === "crop" && cropEffect.apply) {
-      HandleCrop();
-      ConvertToTheOriginalCanvas(cropEffect.apply);
-    }
-  }, [cropEffect])
-
-
-
-  useEffect(() => {
-    if (props.drawEffect.apply) {
-      ConvertToTheOriginalCanvas(props.drawEffect.apply)
-    }
-  }, [props.drawEffect])
 
   function DrawStart(e, fontSize, fontColor, shadowSize, shadowColor) {
     let x = e.clientX - canvasInfo.x
@@ -245,17 +246,14 @@ export default function ImgSection(props) {
     if (NewctxRef.current) {
       NewctxRef.current.fillStyle = `${props.textEffect.color}`
       NewctxRef.current.font = `${props.textEffect.weight} ${props.textEffect.size}px ${props.textEffect.font}`
-      NewctxRef.current.fillText(text, stickerPosition.x, stickerPosition.y + props.textEffect.size)
+      NewctxRef.current.fillText(text, dragPosition.offsetX, dragPosition.offsetY + props.textEffect.size)
+      textInput.current.style.display = 'none'
+      setDragPosition({ offsetX: 0, offsetY: 0 })
     }
   }
 
   useEffect(() => {
-    if (props.section === "text" && props.textEffect.apply) {
-      HandleText()
-      ConvertToTheOriginalCanvas(props.textEffect.apply);
-      textInput.current.style.display = 'none'
-      setDragPosition({ offsetX: 0, offsetY: 0 })
-    }
+
   }, [props.textEffect])
 
 
@@ -284,7 +282,7 @@ export default function ImgSection(props) {
 
   useEffect(() => {
     HandleBorder();
-    ConvertToTheOriginalCanvas(props.borderEffect.apply)
+
   }, [props.borderEffect])
 
   function HandleFrame() {
@@ -314,26 +312,22 @@ export default function ImgSection(props) {
 
   useEffect(() => {
     HandleFrame();
-    ConvertToTheOriginalCanvas(props.frameEffect.apply)
+
   }, [props.frameEffect])
 
 
   function HandleSticker() {
-    if (NewctxRef.current && props.stickerEffect.src) {
-      sticker.current.style.display = 'block'
-      if (props.stickerEffect.apply) {
-        sticker.current.style.display = 'none'
-        NewctxRef.current.drawImage(sticker.current, stickerPosition.x, stickerPosition.y, props.stickerEffect.width, props.stickerEffect.height)
-      }
-    }
+    sticker.current.style.display = 'none'
+    NewctxRef.current.drawImage(sticker.current, dragPosition.offsetX, dragPosition.offsetY, props.stickerEffect.width, props.stickerEffect.height)
+    setDragPosition({ offsetX: 0, offsetY: 0 })
   }
 
   useEffect(() => {
-    HandleSticker();
-    ConvertToTheOriginalCanvas(props.stickerEffect.apply)
-    if (props.stickerEffect.apply) {
-      setDragPosition({ x: 0, y: 0 })
+    if (NewctxRef.current && props.stickerEffect.src) {
+      sticker.current.style.display = 'block'
+
     }
+
   }, [props.stickerEffect])
 
 
@@ -375,7 +369,7 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.section === 'shape') {
       HandleShape()
-      ConvertToTheOriginalCanvas(props.shapeEffect.apply)
+
     }
   }, [props.shapeEffect])
 
@@ -384,7 +378,7 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.section === 'color') {
 
-      ConvertToTheOriginalCanvas(true)
+      ConvertToTheOriginalCanvas()
     }
   }, [props])
 
@@ -471,7 +465,6 @@ export default function ImgSection(props) {
     backgroundColor: boxPosition.color
   }
 
-
   return (
     <div className='imgSection'>
 
@@ -480,7 +473,7 @@ export default function ImgSection(props) {
 
           <canvas ref={canvas} id="canvas" className={props.showBorder && !cropEffect.apply ? "blur" : "normal"} onMouseMove={props.section == "color" ? GetPixel : null}  ></canvas>
           <canvas ref={NewCanvas} onMouseDown={props.section === "draw" ? (e) => DrawStart(e, props.drawEffect.fontSize, props.drawEffect.fontColor, props.drawEffect.shadowSize, props.drawEffect.shadowColor) : null} onMouseMove={props.section === "draw" ? Draw : null} onMouseUp={props.section === "draw" ? DrawEnd : null}></canvas>
-          {props.showBorder && !cropEffect.apply || cropEffect.addText ? <CropArea canvasDimentions={canvasInfo} /> : null}
+          {props.showBorder && !props.options.save ? <CropArea canvasDimentions={canvasInfo} /> : null}
           {props.section === 'text' ? <input className='text' type="text" style={Textstyle} value={text} onChange={(e) => setText(e.target.value)} onDragStart={(e) => DragStart(e, canvasInfo, textInput.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.textEffect.size * 2, props.textEffect.size * 1.2, setDragPosition, dragPosition, dim)} ref={textInput} ></input> : null}
           {props.section === 'sticker' ? <img src={props.stickerEffect.src} ref={sticker} className='sticker' draggable={true} onDragStart={(e) => DragStart(e, canvasInfo, sticker.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.stickerEffect.width, props.stickerEffect.height, setDragPosition, dragPosition, dim)} style={stickerStyle}  ></img> : null}
           {props.section === 'color' ? <div className="pointerBox" style={PointerStyle} onClick={props.section == "color" ? AddBox : null}></div> : null}
@@ -488,15 +481,6 @@ export default function ImgSection(props) {
         </div>
       </div>
 
-      <div className='img-buttons'>
-        <div className='upload' >
-          <label htmlFor="upload" >Upload Another Image</label>
-          <input type="file" id='upload' onChange={handleUpload} ref={uploadInput} />
-        </div>
-        <div className='download'>
-          <a download={true} id="download" onClick={handleDownload} ref={download}>Download The image</a>
-        </div>
-      </div>
       {props.section == 'color' && <div className='colorsContainer'>
         {colorsArray.map((e, i) => {
           return <div key={i} className='box'>
@@ -511,6 +495,7 @@ export default function ImgSection(props) {
           </div>
         })}
       </div>}
+      <a download={true} id="download" onClick={handleDownload} style={{ display: "none" }} ref={download}>Download</a>
     </div>
   )
 }

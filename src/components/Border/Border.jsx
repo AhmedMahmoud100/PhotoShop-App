@@ -10,11 +10,18 @@ export default function Border({ borderEffect }) {
         length: 0
     })
 
-    const [customColor, setCustomColor] = useState('#000000')
+    const [customColor, setCustomColor] = useState({
+        first: '#FFFFFF',
+        second: '#FF0000',
+        third: '#00FF00',
+        fourth: '#0000FF',
+        fifth: '#FFFF00'
+    }
+    )
     useEffect(() => {
         let XBoundary = container.current.getBoundingClientRect().width
         setBoundary(XBoundary)
-        
+
     }, [])
 
     function HandleSize(e) {
@@ -25,30 +32,17 @@ export default function Border({ borderEffect }) {
             borderEffect({ ...borderProprties, length: e.clientX - 20, width: Math.floor(width) })
         }
     }
-    function HandleBorderColor(e) {
-        let color = e.target.id;
-        setBorderProprties({ ...borderProprties, color: color })
-        borderEffect({ ...borderProprties, color: color })
-    }
 
     function HandleCustomColor(e) {
-        setCustomColor(e.target.value);
+        console.log(e.target.name)
+        setCustomColor({ ...customColor, [e.target.name]: e.target.value });
         setBorderProprties({ ...borderProprties, color: e.target.value })
         borderEffect({ ...borderProprties, color: e.target.value })
     }
 
-    function HandleApply() {
-        setBorderProprties({ ...borderProprties, apply: true })
-        borderEffect({ ...borderProprties, apply: true })
-    }
-
-    useEffect(() => {
-        setBorderProprties({ ...borderProprties, apply: false })
-    }, [borderProprties.apply])
-
     return (
         <div className='border' ref={container}>
-            <h2>Add A border</h2>
+            <h2>Border</h2>
             <div className='width'>
                 <div className='part1'>
                     <h3>Width</h3>
@@ -65,26 +59,31 @@ export default function Border({ borderEffect }) {
                 </div>
             </div>
 
-            <div className='colorsSection'>
-                <h3> Border Color</h3>
 
-                <div className='colorsContainer'>
-                    <div className={borderProprties.color === "white" ? "active" : null} id="white" onClick={HandleBorderColor}></div>
-                    <div className={borderProprties.color === "orange" ? "active" : null} id="orange" onClick={HandleBorderColor}></div>
-                    <div className={borderProprties.color === "green" ? "active" : null} id="green" onClick={HandleBorderColor}></div>
-                    <div className={borderProprties.color === "black" ? "active" : null} id="black" onClick={HandleBorderColor}></div>
-                    <div className={borderProprties.color === "red" ? "active" : null} id="red" onClick={HandleBorderColor}></div>
-                    <div className={borderProprties.color === "blue" ? "active" : null} id="blue" onClick={HandleBorderColor}></div>
-                </div>
-                <div className='custom-color'>
-                    <label htmlFor="">custom Color</label>
-                    <div>
-                        <input type="color" value={customColor} onChange={HandleCustomColor} />
+
+            <div className='custom-color'>
+
+                <h3> Color</h3>
+
+                <div className='colors-container'>
+                    <div className={customColor.first === borderProprties.color ? 'active' : null}>
+                        <input type="color" name="first" value={customColor.first} onChange={HandleCustomColor} />
                     </div>
-
+                    <div className={customColor.second === borderProprties.color ? 'active' : null}>
+                        <input type="color" name='second' value={customColor.second} onChange={HandleCustomColor} />
+                    </div>
+                    <div className={customColor.third === borderProprties.color ? 'active' : null}>
+                        <input type="color" name='third' value={customColor.third} onChange={HandleCustomColor} />
+                    </div>
+                    <div className={customColor.fourth === borderProprties.color ? 'active' : null}>
+                        <input type="color" name='fourth' value={customColor.fourth} onChange={HandleCustomColor} />
+                    </div>
+                    <div className={customColor.fifth === borderProprties.color ? 'active' : null}>
+                        <input type="color" name='fifth' value={customColor.fifth} onChange={HandleCustomColor} />
+                    </div>
                 </div>
             </div>
-            <button onClick={HandleApply}>Apply</button>
         </div>
+
     )
 }

@@ -1,11 +1,10 @@
 .border {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     padding: 10px;
-    font-size: 20px;
+    font-size: 16px;
     flex: 1;
-    background-color: antiquewhite;
 
     .width {
         display: flex;
@@ -60,78 +59,44 @@
         }
     }
 
-    .colorsSection {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-
-        .colorsContainer {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-
-            div {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                cursor: pointer;
-
-                &.active {
-                    width: 40px;
-                    height: 40px;
-                }
-            }
-
-            #white {
-                background-color: white;
-            }
-
-            #red {
-                background-color: red;
-            }
-
-            #green {
-                background-color: green;
-            }
-
-            #blue {
-                background-color: blue;
-            }
-
-            #black {
-                background-color: black;
-            }
-
-            #orange {
-                background-color: orange;
-            }
-
-        }
-
+  
         .custom-color {
             display: flex;
-            justify-content: center;
             width: 100%;
             align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            
+            h3 {
+                font-size: 20px;
+            }
+            .colors-container {
+                display: flex;
+                gap: 10px;
 
-            div {
-                width: 30px;
-                height: 30px;
-                border-radius: 50px;
-                overflow: hidden;
-                margin-left: 20px;
+                div {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    overflow: hidden;
 
-                input {
-                    border: 0;
-                    padding: 0;
-                    width: 200%;
-                    height: 200%;
-                    cursor: pointer;
-                    transform: translate(-25%, -25%)
+                    &.active {
+                        width: 35px;
+                        height: 35px;
+                    }
+
+                    input {
+                        border: 0;
+                        padding: 0;
+                        width: 200%;
+                        height: 200%;
+                        cursor: pointer;
+                        transform: translate(-25%, -25%)
+                    }
                 }
             }
 
-       }
-    }
+
+        }
+    
 }

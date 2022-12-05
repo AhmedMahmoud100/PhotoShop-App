@@ -1,0 +1,48 @@
+.help {
+    background-color: #2121a1;
+    min-height: 100vh;
+    padding: 20px;
+
+    .container {
+        margin: 0px auto;
+        background-color: white;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0px 0px 4px 1px rgb(0 0 0 / 30%);
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        h2 {
+            align-self: center;
+        }
+
+        img {
+            width: 200px;
+            align-self: center;
+        }
+    }
+}
+
+@media (min-width:767px) {
+    .container {
+        width: 760px;
+    }
+}
+
+@media (min-width:997px) {
+    .container {
+        width: 990px;
+    }
+}
+
+@media (min-width:1200px) {
+    .container {
+        width: 1000px;
+    }
+}

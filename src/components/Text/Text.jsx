@@ -10,12 +10,20 @@ export default function Text({ textEffect }) {
         color: "red",
         apply: false,
         size: 20,
-        fontLength: 0 ,
-        addText : false
+        fontLength: 0,
+        addText: false
+    })
+
+    const [customColor, setCustomColor] = useState({
+        first: '#FFFFFF',
+        second: '#FF0000',
+        third: '#00FF00',
+        fourth: '#0000FF',
+        fifth: '#FFFF00'
     })
 
     useEffect(() => {
-      
+
         textEffect({ ...textProp, apply: false })
         setTextProp({ ...textProp, apply: false })
     }, [textProp.apply])
@@ -36,11 +44,11 @@ export default function Text({ textEffect }) {
             textEffect({ ...textProp, fontLength: e.clientX - 20, size: Math.floor(size) })
         }
     }
-    function HandleFontColor(e) {
-        let color = e.target.id;
+    function HandleCustomColor(e) {
 
-        setTextProp({ ...textProp, color: color })
-        textEffect({ ...textProp, color: color })
+        setCustomColor({ ...customColor, [e.target.name]: e.target.value });
+        setTextProp({ ...textProp, color: e.target.value })
+        textEffect({ ...textProp, color: e.target.value })
     }
 
     function HandleFont(e) {
@@ -53,7 +61,7 @@ export default function Text({ textEffect }) {
         textEffect({ ...textProp, weight: e.target.value })
     }
 
-   
+
 
     return (
         <div className='textSection' ref={container}>
@@ -94,25 +102,29 @@ export default function Text({ textEffect }) {
                     </div>
                 </div>
             </div>
-            <div className='colorsSection'>
-                <h3> Font Color</h3>
-                <div className='colorsContainer'>
-                    <div className={textProp.color === "white" ? "active" : null} id="white" onClick={HandleFontColor}></div>
-                    <div className={textProp.color === "orange" ? "active" : null} id="orange" onClick={HandleFontColor}></div>
-                    <div className={textProp.color === "green" ? "active" : null} id="green" onClick={HandleFontColor}></div>
-                    <div className={textProp.color === "black" ? "active" : null} id="black" onClick={HandleFontColor}></div>
-                    <div className={textProp.color === "red" ? "active" : null} id="red" onClick={HandleFontColor}></div>
-                    <div className={textProp.color === "blue" ? "active" : null} id="blue" onClick={HandleFontColor}></div>
+            <div className='custom-color'>
+
+                <h3> Color</h3>
+
+                <div className='colors-container'>
+                    <div className={customColor.first === textProp.color ? 'active' : null}>
+                        <input type="color" name="first" value={customColor.first} onChange={HandleCustomColor} />
+                    </div>
+                    <div className={customColor.second === textProp.color ? 'active' : null}>
+                        <input type="color" name='second' value={customColor.second} onChange={HandleCustomColor} />
+                    </div>
+                    <div className={customColor.third === textProp.color ? 'active' : null}>
+                        <input type="color" name='third' value={customColor.third} onChange={HandleCustomColor} />
+                    </div>
+                    <div className={customColor.fourth === textProp.color ? 'active' : null}>
+                        <input type="color" name='fourth' value={customColor.fourth} onChange={HandleCustomColor} />
+                    </div>
+                    <div className={customColor.fifth === textProp.color ? 'active' : null}>
+                        <input type="color" name='fifth' value={customColor.fifth} onChange={HandleCustomColor} />
+                    </div>
                 </div>
             </div>
-            <button onClick={() => {
-                setTextProp({ ...textProp, apply: true , addText : false})
-                textEffect({ ...textProp, apply: true , addText : false})
-            }}>Apply</button>
-            <button onClick={() => {
-                setTextProp({ ...textProp, addText: true })
-                textEffect({ ...textProp, addText: true })
-            }}>Add Text</button>
+
         </div>
     )
 }

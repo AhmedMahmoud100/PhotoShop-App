@@ -1,0 +1,11 @@
+.color {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 16px;
+    padding: 10px;
+
+    span {
+        color: #76f576;
+    }
+}

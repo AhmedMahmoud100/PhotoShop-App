@@ -1,0 +1,35 @@
+.re-size {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+    font-size: 16px;
+    flex: 1;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+
+        input {
+            width: 50px;
+            background-color: blue;
+            color: white;
+            padding-left: 5px;
+            border: 0;
+            outline: 0;
+        }
+    }
+    .ratio {
+        input {
+            width: 25px;
+            background-color: blue;
+            color: white;
+            padding-left: 5px;
+            border: 0;
+            outline: 0;
+        }
+    }
+    button {
+        padding: 10px 20px;
+    }
+}

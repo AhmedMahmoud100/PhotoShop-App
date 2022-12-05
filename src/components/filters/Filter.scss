@@ -1,6 +1,8 @@
 .filters {
     flex: 1;
-    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+
     ul {
         display: flex;
         list-style: none;
@@ -12,6 +14,13 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+
+
         }
     }
+
+    button {
+        margin-top: 10px;
+    }
+
 }

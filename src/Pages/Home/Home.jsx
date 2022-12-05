@@ -1,5 +1,5 @@
 import React from 'react'
-import FirstSection from '../components/FirstSection/FirstSection'
+import FirstSection from '../../components/FirstSection/FirstSection'
 
 export default function Home() {
     return (

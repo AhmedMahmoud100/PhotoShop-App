@@ -8,12 +8,11 @@ export default function Instructions() {
             <p>Choose in the toolbar how you want to edit your image.</p>
             <p>
                 It's easy and fast to resize, crop and add text to your image.
-                Also to make an image animated is simple.
+                Also to make an image croped in various shapes.
             </p>
             <p>
-                For questions about the chosen function click the question mark
-                in the upper right corner.
-                There you can find tutorials of the specified function
+               <span> Note : </span>  you must click on save to save changes to your images before 
+                trying to choose another feature in the toolbar or downloading the image .
             </p>
         </div>
     )

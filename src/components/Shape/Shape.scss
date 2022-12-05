@@ -3,13 +3,49 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    font-size: 20px;
+    font-size: 16px;
     flex: 1;
-    background-color: antiquewhite;
+ 
+    h2 {
+        align-self: center;
+    }
+    .shapes-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        height: 350px;
+        overflow-y: scroll;
+        border: 10px solid rgba(3, 32, 74, 0.9);
+        border-radius: 20px;
+        border-right: none;
+        padding: 10px;
+        width: 200px;
+        margin: 0 auto;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+            /* width of the entire scrollbar */
+        }
+
+        &::-webkit-scrollbar-track {
+            background: rgba(3, 32, 74, 0.9);
+            /* color of the tracking area */
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(3, 23, 51, 0.9);
+            /* color of the scroll thumb */
+            border-radius: 10px;
+            /* roundness of the scroll thumb */
+            border: 3px solid black;
+            /* creates padding around scroll thumb */
+        }
+    }
 
     img {
-        width: 100px;
-        height: 100px;
+        width: 70px;
+        height: 70px;
         cursor: pointer;
     }
 }

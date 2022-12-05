@@ -3,12 +3,12 @@
     flex-direction: column;
     gap: 20px;
     padding: 10px;
-    font-size: 20px;
+    font-size: 16px;
     flex: 1;
-    background-color: antiquewhite;
-    
+
     h3 {
-        font-size: 22px;
+        font-size: 16px;
+        align-self: center;
     }
 
     .type {
@@ -19,7 +19,7 @@
 
         button {
             padding: 5px 10px;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
 
             &.active {
@@ -28,18 +28,18 @@
             }
         }
     }
-    
+
     .fontProp {
         display: flex;
         flex-direction: column;
         width: 100%;
 
         h3 {
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .part1 {
-            font-size: 20px;
+            font-size: 16px;
             padding: 10px;
             display: flex;
             justify-content: space-between;
@@ -81,6 +81,7 @@
 
         }
     }
+
     .font {
         padding: 10px 0;
         display: flex;
@@ -88,11 +89,15 @@
 
 
         label {
-            font-size: 25px;
+            font-size: 20px;
         }
 
         select {
-            font-size: 20px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            outline: none;
         }
     }
 
@@ -103,61 +108,53 @@
 
 
         label {
-            font-size: 25px;
+            font-size: 20px;
         }
 
         select {
-            font-size: 20px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            outline: none;
         }
     }
 
-    .colorsSection {
+    .custom-color {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
+        width: 100%;
         align-items: center;
+        flex-direction: column;
+        gap: 20px;
 
-        .colorsContainer {
+        h3 {
+            font-size: 20px;
+        }
+
+        .colors-container {
             display: flex;
             gap: 10px;
-            align-items: center;
 
             div {
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
-                cursor: pointer;
+                overflow: hidden;
 
                 &.active {
-                    width: 40px;
-                    height: 40px;
+                    width: 35px;
+                    height: 35px;
+                }
+
+                input {
+                    border: 0;
+                    padding: 0;
+                    width: 200%;
+                    height: 200%;
+                    cursor: pointer;
+                    transform: translate(-25%, -25%)
                 }
             }
-
-            #white {
-                background-color: white;
-            }
-
-            #red {
-                background-color: red;
-            }
-
-            #green {
-                background-color: green;
-            }
-
-            #blue {
-                background-color: blue;
-            }
-
-            #black {
-                background-color: black;
-            }
-
-            #orange {
-                background-color: orange;
-            }
-
         }
     }
 }

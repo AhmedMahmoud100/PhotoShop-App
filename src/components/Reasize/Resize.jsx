@@ -39,6 +39,7 @@ export default function Resize({ resizeEffect, imgDimentions }) {
 
     return (
         <div className='re-size'>
+            <h2>Resize</h2>
             <div className='width'>
                 <label htmlFor="width">width(px)</label>
                 <input type="number" value={width} id="width" onChange={HandleWidth} />

@@ -29,9 +29,9 @@ export default function NavBar({ section }) {
                     <CropIcon />
                     <span>Crop</span>
                 </li>
-                <li onClick={() => section("transform")}>
+                <li onClick={() => section("rotate")}>
                     <CropRotateIcon />
-                    <span>transform</span>
+                    <span>Rotate</span>
                 </li>
                 <li onClick={() => section("draw")}>
                     <BrushIcon />

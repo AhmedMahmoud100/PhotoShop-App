@@ -6,8 +6,8 @@ import Color from '../../components/Color/Color'
 import Draw from '../../components/Draw/Draw'
 import Frame from '../../components/Frame/Frame'
 import ImgSection from '../../components/ImgSection/ImgSection'
-import Filter from '../../components/options/filters/Filter'
-import Resize from '../../components/options/Reasize/Resize'
+import Filter from '../../components/filters/Filter'
+import Resize from '../../components/Reasize/Resize'
 import Shape from '../../components/Shape/Shape'
 import Sticker from '../../components/Sticker/Sticker'
 import Transform from '../../components/Transform/Transform'
@@ -17,6 +17,7 @@ import { useState } from 'react'
 import NavBar from '../../components/NavBar/NavBar'
 import CropArea from '../../components/CropArea/CropArea'
 import Instructions from '../../components/instructions/Instructions'
+import Options from '../../components/options/Options'
 
 export default function Main() {
     const [filtersEffect, setFiltersEffect] = useState('')
@@ -32,31 +33,36 @@ export default function Main() {
     const [stickerEffect, setStickerEffect] = useState({})
     const [shapeEffect, setShapeEffect] = useState({})
     const [section, setSection] = useState('first')
-    const [imgDimentions,setImgDimentions] = useState({})
+    const [imgDimentions, setImgDimentions] = useState({})
+    const[options,setOptions] = useState({})
+
     return (
         <main>
-            < NavBar section={setSection} />
-            <div className='mainSection' >
-                {section === "first" && <Instructions  />}
-                {section === "filter" && <Filter filtersEffect={setFiltersEffect} />}
-                {section === "resize" && <Resize resizeEffect={setresizeEffect} imgDimentions={imgDimentions} />}
-                {section === "transform" && <Transform rotateEffect={setRotateEffect} />}
-                {section === "draw" && <Draw drawEffect={setDrawEffect} />}
-                {section === "text" && <Text textEffect={setTextEffect} />}
-                {section === "color" && <Color />}
-                {section === "border" && <Border borderEffect={setBorderEffect} />}
-                {section === "frame" && <Frame frameEffect={setFrameEffect} />}
-                {section === "sticker" && <Sticker stickerEffect={setStickerEffect} />}
-                {section === "shape" && <Shape shapeEffect={setShapeEffect} />}
-
-                <ContextPovider>
+            <ContextPovider>
+                < NavBar section={setSection} />
+                <div className='mainSection' >
+                    <aside className='main-aside'>
+                    <Options options={setOptions} />
+                    {section === "first" && <Instructions />}
+                    {section === "filter" && <Filter filtersEffect={setFiltersEffect} />}
+                    {section === "resize" && <Resize resizeEffect={setresizeEffect} imgDimentions={imgDimentions} />}
+                    {section === "rotate" && <Transform rotateEffect={setRotateEffect} />}
+                    {section === "draw" && <Draw drawEffect={setDrawEffect} />}
+                    {section === "text" && <Text textEffect={setTextEffect} />}
+                    {section === "color" && <Color />}
+                    {section === "border" && <Border borderEffect={setBorderEffect} />}
+                    {section === "frame" && <Frame frameEffect={setFrameEffect} />}
+                    {section === "sticker" && <Sticker stickerEffect={setStickerEffect} />}
+                    {section === "shape" && <Shape shapeEffect={setShapeEffect} />}
                     {section === "crop" && <Crop />}
+                    </aside>
                     {/* <CropArea /> */}
-                    <ImgSection imgDimentions={setImgDimentions} shapeEffect={shapeEffect} stickerEffect={stickerEffect} frameEffect={frameEffect} borderEffect={borderEffect} textEffect={textEffect} drawEffect={drawEffect} filtersEffect={filtersEffect} resizeEffect={resizeEffect} rotateEffect={rotateEffect} showBorder={section === "crop" ? true : false} section={section} />
+                    <ImgSection  options={options} imgDimentions={setImgDimentions} shapeEffect={shapeEffect} stickerEffect={stickerEffect} frameEffect={frameEffect} borderEffect={borderEffect} textEffect={textEffect} drawEffect={drawEffect} filtersEffect={filtersEffect} resizeEffect={resizeEffect} rotateEffect={rotateEffect} showBorder={section === "crop" ? true : false} section={section} />
 
                     {/* <Clone /> */}
-                </ContextPovider>
-            </div>
+
+                </div>
+            </ContextPovider>
         </main>
     )
 }

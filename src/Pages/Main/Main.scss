@@ -1,6 +1,29 @@
 main {
     .mainSection {
         display: flex;
-        gap: 20px;
     }
+
+    .main-aside {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        background-color: rgba(3, 23, 51, 0.9);
+        color: rgb(0 167 255 / 90%);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.75);
+        clip-path: inset(0px -15px 0px 0px);
+
+        h2 {
+            align-self: center;
+            padding-top: 10px;
+            font-size: 25px;
+            color: rgb(0, 167, 255);
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+            padding: 3px;
+        }
+    }
+
 }
