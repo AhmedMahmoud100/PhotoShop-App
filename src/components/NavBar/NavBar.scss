@@ -11,6 +11,7 @@
         display: flex;
         gap: 20px;
         color: rgb(0 167 255);
+        flex-wrap: wrap;
 
         li {
             display: flex;
@@ -26,3 +27,4 @@
         }
     }
 }
+

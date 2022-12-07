@@ -45,15 +45,6 @@ const [imgSrc, setImgSrc] = useState('')
     NewctxRef.current.drawImage(img.current, 0, 0, canvas.current.width, canvas.current.height);
 
     const canvasImageData = NewctxRef.current.getImageData(0,0,canvas.current.width,canvas.current.height)
-    console.log(canvasImageData.data[0])
-    console.log(canvasImageData.data[1])
-    console.log(canvasImageData.data[2])
-    console.log(canvasImageData.data[3])
-    console.log("gg" , (canvas.current.width - 1) * 4)
-    console.log(canvasImageData.data[(canvas.current.width - 1) * 4])
-    console.log(canvasImageData.data[(canvas.current.width - 1) * 4 + 1])
-    console.log(canvasImageData.data[(canvas.current.width - 1) * 4 + 2])
-    console.log(canvasImageData.data[(canvas.current.width - 1) * 4 + 3])
     
     NewctxRef.current.clearRect(0,0,canvas.current.width,canvas.current.height)
     for (let index = 0 ,datalength = canvasImageData.data.length ;

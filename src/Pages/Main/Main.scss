@@ -27,3 +27,11 @@ main {
     }
 
 }
+
+@media(max-width:650px) {
+    main {
+        .mainSection {
+            flex-direction: column;
+        }
+    }
+}

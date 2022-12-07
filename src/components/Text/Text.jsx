@@ -38,10 +38,10 @@ export default function Text({ textEffect }) {
 
     function HandleSize(e) {
         e.dataTransfer.setDragImage(new Image(), 0, 0)
-        if (e.clientX > 10 && e.clientX < boundary - 20) {
-            let size = (e.clientX - 20) / (boundary / 100)
-            setTextProp({ ...textProp, fontLength: e.clientX - 20, size: Math.floor(size) })
-            textEffect({ ...textProp, fontLength: e.clientX - 20, size: Math.floor(size) })
+        if (e.pageX > 10 && e.pageX < boundary - 20) {
+            let size = (e.pageX - 20) / (boundary / 100)
+            setTextProp({ ...textProp, fontLength: e.pageX - 20, size: Math.floor(size) })
+            textEffect({ ...textProp, fontLength: e.pageX - 20, size: Math.floor(size) })
         }
     }
     function HandleCustomColor(e) {

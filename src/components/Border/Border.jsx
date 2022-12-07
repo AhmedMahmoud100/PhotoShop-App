@@ -26,15 +26,14 @@ export default function Border({ borderEffect }) {
 
     function HandleSize(e) {
         e.dataTransfer.setDragImage(new Image(), 0, 0)
-        if (e.clientX > 10 && e.clientX < boundary - 20) {
-            let width = (e.clientX - 10) / ((boundary - 20) / 100)
-            setBorderProprties({ ...borderProprties, length: e.clientX - 20, width: Math.floor(width) })
-            borderEffect({ ...borderProprties, length: e.clientX - 20, width: Math.floor(width) })
+        if (e.pageX > 10 && e.pageX < boundary - 20) {
+            let width = (e.pageX - 10) / ((boundary - 20) / 100)
+            setBorderProprties({ ...borderProprties, length: e.pageX - 20, width: Math.floor(width) })
+            borderEffect({ ...borderProprties, length: e.pageX - 20, width: Math.floor(width) })
         }
     }
 
     function HandleCustomColor(e) {
-        console.log(e.target.name)
         setCustomColor({ ...customColor, [e.target.name]: e.target.value });
         setBorderProprties({ ...borderProprties, color: e.target.value })
         borderEffect({ ...borderProprties, color: e.target.value })

@@ -1,8 +1,14 @@
 .firstSection {
     background-image: url('/photo-shop.png');
-    height: calc(100vh - 55px);
-    width: 100vw;
+    min-height: calc(100vh - 55px);
+    max-width: 100vw;
+    padding: 10px;
+    background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+   
 
     h2 {
         text-align: center;
@@ -11,21 +17,23 @@
     }
 
     .overLay {
-        background-color: rgb(70 190 253 / 30%);
+        background-color: rgb(70 190 253 / 70%);
         width: fit-content;
         padding: 20px;
         margin: 20px;
         color: rgb(70 190 253 / 1);
         color: black;
+        min-height: 500px;
 
         h3 {
             font-size: 16px;
+            padding: 10px 0;
         }
 
         ul {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 20px;
             padding: 10px 20px;
 
             li {
@@ -55,20 +63,13 @@
                     background-color: #000068;
                 }
             }
-
-            // button {
-            //     margin-top: 10px;
-            //     align-self: center;
-            //     width: fit-content;
-            //     font-size: 16px;
-            //     padding: 10px 20px;
-            //     background-color: rgba(3, 32, 74, 0.9);
-            //     color: rgb(0, 167, 255);
-            //     border-radius: 5px;
-            //     cursor: pointer;
-
-                
-            // }
         }
+    }
+}
+
+@media(max-width : 797px) {
+    .firstSection {
+        align-items: center;
+        background-image: url('/pattern.png');
     }
 }

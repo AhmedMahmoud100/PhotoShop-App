@@ -38,7 +38,6 @@
             align-items: center;
             cursor: pointer;
             color: rgb(70 190 253 / 1);
-            text-decoration: none;
         }
 
         button {
@@ -58,6 +57,25 @@
             font-weight: bold;
             cursor: pointer;
             letter-spacing: 0.7px;
+        }
+    }
+}
+
+@media(max-width:550px) {
+    .main-header {
+        flex-direction: column;
+        padding: 0;
+        background-color: #0f0f31;
+
+        .right {
+            background-color: rgb(7 35 74 / 90%);
+            width: 100%;
+            padding: 10px;
+            justify-content: center;
+
+            .test {
+                background-color: transparent;
+            }
         }
     }
 }

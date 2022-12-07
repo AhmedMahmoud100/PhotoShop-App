@@ -23,16 +23,16 @@ export default function CropArea({ canvasDimentions }) {
     function ExtendBottomRightStart(e) {
         setDim({
             ...dim,
-            x: e.clientX,
+            x: e.pageX,
             width: crop.sourceW
         })
     }
 
     function ExtendBottomRight(e) {
-        if (e.clientY > 0 && e.clientX > 0) {
-            let y = Math.round(e.clientY - canvasDimentions.y - square.current.offsetTop)
-            let x = Math.round(e.clientX - dim.x + dim.width)
-            if (e.clientY < canvasDimentions.y + canvasDimentions.height && e.clientX < canvasDimentions.x + canvasDimentions.width) {
+        if (e.pageY > 0 && e.pageX > 0) {
+            let y = Math.round(e.pageY - canvasDimentions.y - square.current.offsetTop)
+            let x = Math.round(e.pageX - dim.x + dim.width)
+            if (e.pageY < canvasDimentions.y + canvasDimentions.height && e.pageX < canvasDimentions.x + canvasDimentions.width) {
                 setcrop({ ...crop, sourceH: y, sourceW: x })
             }
         }
@@ -42,7 +42,7 @@ export default function CropArea({ canvasDimentions }) {
 
     function ExtendTopLeftStart(e) {
         setDim({
-            x: e.clientX,
+            x: e.pageX,
             left: square.current.offsetLeft,
             width: crop.sourceW,
             y: square.current.offsetTop,
@@ -52,12 +52,12 @@ export default function CropArea({ canvasDimentions }) {
     }
 
     function ExtendTopLeft(e) {
-        let x = Math.round(dim.x - e.clientX + dim.width)
-        let y = Math.round(dim.y - e.clientY + canvasDimentions.y + dim.height)
-        if (e.clientX > canvasDimentions.x && e.clientY > canvasDimentions.y) {
+        let x = Math.round(dim.x - e.pageX + dim.width)
+        let y = Math.round(dim.y - e.pageY + canvasDimentions.y + dim.height)
+        if (e.pageX > canvasDimentions.x && e.pageY > canvasDimentions.y) {
             setcrop({
-                ...crop, sourceW: x, offsetX: Math.round(dim.left - (dim.x - e.clientX)),
-                sourceH: y, offsetY: Math.round(e.clientY - canvasDimentions.y)
+                ...crop, sourceW: x, offsetX: Math.round(dim.left - (dim.x - e.pageX)),
+                sourceH: y, offsetY: Math.round(e.pageY - canvasDimentions.y)
             })
         }
     }
@@ -65,7 +65,7 @@ export default function CropArea({ canvasDimentions }) {
     function ExtendTopRightStart(e) {
         setDim({
             ...dim,
-            x: e.clientX,
+            x: e.pageX,
             width: crop.sourceW,
             y: square.current.offsetTop,
             height: crop.sourceH
@@ -73,20 +73,20 @@ export default function CropArea({ canvasDimentions }) {
     }
 
     function ExtendTopRight(e) {
-        let x = Math.round(e.clientX - dim.x + dim.width)
-        let y = Math.round(dim.y - e.clientY + canvasDimentions.y + dim.height)
+        let x = Math.round(e.pageX - dim.x + dim.width)
+        let y = Math.round(dim.y - e.pageY + canvasDimentions.y + dim.height)
 
-        if (e.clientX < canvasDimentions.x + canvasDimentions.width &&
-            e.clientY > canvasDimentions.y
+        if (e.pageX < canvasDimentions.x + canvasDimentions.width &&
+            e.pageY > canvasDimentions.y
         ) {
-            setcrop({ ...crop, sourceW: x, sourceH: y, offsetY: Math.round(e.clientY - canvasDimentions.y) })
+            setcrop({ ...crop, sourceW: x, sourceH: y, offsetY: Math.round(e.pageY - canvasDimentions.y) })
         }
     }
 
     function ExtendBottomLeftStart(e) {
         setDim({
             ...dim,
-            x: e.clientX,
+            x: e.pageX,
             left: square.current.offsetLeft,
             width: crop.sourceW
         })
@@ -94,27 +94,27 @@ export default function CropArea({ canvasDimentions }) {
     }
 
     function ExtendBottomLeft(e) {
-        let x = Math.round(dim.x - e.clientX + dim.width)
-        let y = Math.round(e.clientY - canvasDimentions.y - square.current.offsetTop)
-        if (e.clientX > canvasDimentions.x &&
-            e.clientY < canvasDimentions.y + canvasDimentions.height
+        let x = Math.round(dim.x - e.pageX + dim.width)
+        let y = Math.round(e.pageY - canvasDimentions.y - square.current.offsetTop)
+        if (e.pageX > canvasDimentions.x &&
+            e.pageY < canvasDimentions.y + canvasDimentions.height
         ) {
-            setcrop({ ...crop, sourceW: x, offsetX: Math.round(dim.left - (dim.x - e.clientX)), sourceH: y })
+            setcrop({ ...crop, sourceW: x, offsetX: Math.round(dim.left - (dim.x - e.pageX)), sourceH: y })
         }
     }
 
     function ExtendRightStart(e) {
         setDim({
             ...dim,
-            x: e.clientX,
+            x: e.pageX,
             width: crop.sourceW
         })
     }
 
     function ExtendRight(e) {
-        if (e.clientX > 0) {
-            let x = Math.round(e.clientX - dim.x + dim.width)
-            if (e.clientX < canvasDimentions.x + canvasDimentions.width) {
+        if (e.pageX > 0) {
+            let x = Math.round(e.pageX - dim.x + dim.width)
+            if (e.pageX < canvasDimentions.x + canvasDimentions.width) {
                 setcrop({ ...crop, sourceW: x })
             }
         }
@@ -123,7 +123,7 @@ export default function CropArea({ canvasDimentions }) {
     function ExtendLeftStart(e) {
         setDim({
             ...dim,
-            x: e.clientX,
+            x: e.pageX,
             left: square.current.offsetLeft,
             width: crop.sourceW
         })
@@ -131,18 +131,18 @@ export default function CropArea({ canvasDimentions }) {
     }
 
     function ExtendLeft(e) {
-        let x = Math.round(dim.x - e.clientX + dim.width)
-        let offsetX = Math.round(dim.left - (dim.x - e.clientX))
-        if (e.clientX > canvasDimentions.x) {
+        let x = Math.round(dim.x - e.pageX + dim.width)
+        let offsetX = Math.round(dim.left - (dim.x - e.pageX))
+        if (e.pageX > canvasDimentions.x) {
             setcrop({ ...crop, sourceW: x, offsetX: offsetX })
         }
     }
 
     function ExtendBottom(e) {
-        if (e.clientY > 0) {
-            let y = Math.round(e.clientY - canvasDimentions.y - square.current.offsetTop)
+        if (e.pageY > 0) {
+            let y = Math.round(e.pageY - canvasDimentions.y - square.current.offsetTop)
 
-            if (e.clientY < canvasDimentions.y + canvasDimentions.height) {
+            if (e.pageY < canvasDimentions.y + canvasDimentions.height) {
                 setcrop({ ...crop, sourceH: y })
             }
         }
@@ -157,9 +157,9 @@ export default function CropArea({ canvasDimentions }) {
     }
 
     function ExtendTop(e) {
-        let y = Math.round(dim.y - e.clientY + canvasDimentions.y + dim.height)
-        if (e.clientY > canvasDimentions.y) {
-            setcrop({ ...crop, sourceH: y, offsetY: Math.round(e.clientY - canvasDimentions.y) })
+        let y = Math.round(dim.y - e.pageY + canvasDimentions.y + dim.height)
+        if (e.pageY > canvasDimentions.y) {
+            setcrop({ ...crop, sourceH: y, offsetY: Math.round(e.pageY - canvasDimentions.y) })
         }
     }
    

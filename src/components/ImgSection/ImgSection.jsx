@@ -33,7 +33,6 @@ export default function ImgSection(props) {
     color: 'black'
   })
   const [colorsArray, SetColorsArray] = useState([])
-  const [averageColor, setAverageColor] = useState('')
   const [dim, setDim] = useState()
 
   useEffect(() => {
@@ -44,21 +43,25 @@ export default function ImgSection(props) {
     if (props.options.download) {
       download.current.click();
     }
-    if (props.options.save) {
+    if (props.options.save && props.section != 'color') {
       ConvertToTheOriginalCanvas()
+      MakeNewCanvas();
     }
     if (props.section === "text" && props.options.save) {
       HandleText()
       ConvertToTheOriginalCanvas()
+      MakeNewCanvas();
 
     }
     if (props.section === "sticker" && props.options.save) {
       HandleSticker()
       ConvertToTheOriginalCanvas()
+      MakeNewCanvas();
     }
     if ((props.section === "crop") && props.options.save) {
       HandleCrop();
       ConvertToTheOriginalCanvas()
+      MakeNewCanvas();
     }
   }, [props.options])
 
@@ -69,7 +72,7 @@ export default function ImgSection(props) {
       setImgSrc(state.src)
     }
 
-  }, [])
+  }, [state])
 
   useEffect(() => {
     const image = new Image();
@@ -86,7 +89,6 @@ export default function ImgSection(props) {
       canvas.current.style.display = "block"
       NewCanvas.current.style.display = "none"
 
-
       ctx.drawImage(image, 0, 0, canvas.current.width, canvas.current.height);
       MakeNewCanvas();
       props.imgDimentions(
@@ -95,14 +97,6 @@ export default function ImgSection(props) {
           height: image.naturalHeight
         }
       )
-      // circle
-
-      NewctxRef.current.strokeStyle = 'red'
-      NewctxRef.current.lineWidth = '5'
-      NewctxRef.current.arc(180,320,25,0,Math.PI * 2)
-      NewctxRef.current.stroke()
-    
-     
     }
   }, [imgSrc])
 
@@ -134,7 +128,8 @@ export default function ImgSection(props) {
   useEffect(() => {
     CanvasInfo();
   }
-    , [props])
+    , [])
+
   function MakeNewCanvas() {
     NewCanvas.current.width = canvas.current.width;
     NewCanvas.current.height = canvas.current.height;
@@ -147,7 +142,12 @@ export default function ImgSection(props) {
     if (NewctxRef.current) {
       MakeNewCanvas();
       setcropEffect({ ...cropEffect, addText: false })
+
+      if (props.section === 'color') {
+        ConvertToTheOriginalCanvas();
+      }
     }
+
   }, [props.section])
 
   function ConvertToTheOriginalCanvas() {
@@ -197,7 +197,7 @@ export default function ImgSection(props) {
   }
 
   useEffect(() => {
-    if (props.section === "transform") {
+    if (props.section === "rotate") {
       HandleRotate();
     }
   }, [props.rotateEffect])
@@ -213,10 +213,10 @@ export default function ImgSection(props) {
     NewctxRef.current.drawImage(canvas.current, offsetX, offsetY, sourceW, sourceH, 0, 0, sourceW, sourceH);
   }
 
-
   function DrawStart(e, fontSize, fontColor, shadowSize, shadowColor) {
-    let x = e.clientX - canvasInfo.x
-    let y = e.clientY - canvasInfo.y
+    let x = e.pageX - canvasInfo.x
+    let y = e.pageY - canvasInfo.y
+    console.log(canvasInfo.y)
     NewctxRef.current.beginPath()
 
     NewctxRef.current.lineJoin = NewctxRef.current.lineCap = 'round'
@@ -230,8 +230,8 @@ export default function ImgSection(props) {
 
   function Draw(e) {
     if (drawing) {
-      let x = e.clientX - canvasInfo.x
-      let y = e.clientY - canvasInfo.y
+      let x = e.pageX - canvasInfo.x
+      let y = e.pageY - canvasInfo.y
       NewctxRef.current.lineTo(x, y)
       NewctxRef.current.stroke()
     }
@@ -369,28 +369,20 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.section === 'shape') {
       HandleShape()
-
     }
   }, [props.shapeEffect])
-
-
-
-  useEffect(() => {
-    if (props.section === 'color') {
-
-      ConvertToTheOriginalCanvas()
-    }
-  }, [props])
 
   if (ctxRef.current) {
     let imgData = ctxRef.current.getImageData(0, 0, canvas.current.width, canvas.current.height).data;
     imgDataRef.current = imgData
   }
 
-  function GetPixelColor(cols, offsetX, offsetY,) {
-
-    const pixelIndex = cols * offsetY + offsetX
-    const colorIndex = pixelIndex * 4
+  function GetPixelColor(cols, offsetX, offsetY) {
+    let y = offsetY - 1 >= 0 ? offsetY - 1 : 0
+    let x = offsetX - 1 >= 0 ? offsetX - 1 : 0
+    const pixelIndex = ( cols * y ) + x
+    const colorIndex =  pixelIndex * 4  
+   
     const PixelColor = {
       red: imgDataRef.current[colorIndex],
       green: imgDataRef.current[colorIndex + 1],
@@ -403,9 +395,14 @@ export default function ImgSection(props) {
   function GetPixel(e) {
     let cols = canvas.current.width
 
+    let offsetX = Math.floor(e.pageX - canvasInfo.x)
+    let offsetY = Math.floor(e.pageY - canvasInfo.y)
 
-    let offsetX = Math.floor(e.clientX - canvasInfo.x)
-    let offsetY = Math.floor(e.clientY - canvasInfo.y)
+    let clientX = Math.min(offsetX, canvasInfo.width);
+    clientX = Math.max(clientX, 0);
+
+    let clientY = Math.min(offsetY, canvasInfo.height);
+    clientY = Math.max(clientY, 0);
 
     let BoxOffsetX = Math.min(offsetX - 20, canvasInfo.width - 40);
     BoxOffsetX = Math.max(BoxOffsetX, 0);
@@ -413,14 +410,19 @@ export default function ImgSection(props) {
     let BoxOffsetY = Math.min(offsetY - 20, canvasInfo.height - 40);
     BoxOffsetY = Math.max(BoxOffsetY, 0);
 
-    let c = GetPixelColor(cols, offsetX, offsetY)
+    let c = GetPixelColor(cols, clientX, clientY)
 
-    let colorString = `rgb(${c.red} ${c.green} ${c.blue} / ${c.alpha / 255})`
-    setBoxPosition({ top: BoxOffsetY, left: BoxOffsetX, color: colorString })
-    getAverage(cols, offsetX, offsetY)
+    let colorString;
 
+    if (c.alpha == 255) {
+      colorString = `rgb(${c.red} ${c.green} ${c.blue})`
+    } else {
+      const alpha = c.alpha / 255
+      colorString = `rgb(${c.red} ${c.green} ${c.blue} / ${alpha.toFixed(1)})`
+    }
+
+    setBoxPosition({ top: BoxOffsetY, left: BoxOffsetX, color: colorString, clientX: clientX, clientY: clientY })
   }
-
 
   function getAverage(cols, offsetX, offsetY) {
     let reds = 0;
@@ -430,7 +432,14 @@ export default function ImgSection(props) {
 
     for (let x = -20; x <= 20; x++) {
       for (let y = -20; y <= 20; y++) {
-        let c = GetPixelColor(cols, offsetX + x, offsetY + y);
+
+        let PositionX = Math.min(offsetX + x, canvasInfo.width)
+        PositionX = Math.max(PositionX, 0)
+
+        let PositionY = Math.min(offsetY + y, canvasInfo.height)
+        PositionY = Math.max(PositionY, 0)
+
+        let c = GetPixelColor(cols, PositionX, PositionY);
         reds += c.red;
         greens += c.green;
         blues += c.blue;
@@ -442,16 +451,27 @@ export default function ImgSection(props) {
     let green = Math.round(greens / nums)
     let blue = Math.round(blues / nums)
     let alpha = Math.round(alphas / nums)
-    let colorString = `rgb(${red} ${green} ${blue} / ${alpha / 255})`
-    setAverageColor(colorString)
+
+    let colorString;
+
+    if (alpha == 255) {
+      colorString = `rgb(${red} ${green} ${blue})`
+    } else {
+      colorString = `rgb(${red} ${green} ${blue} / ${(alpha / 255).toFixed(1)})`
+    }
+
+    return colorString;
   }
 
   function AddBox() {
+    let cols = canvas.current.width
+    const AverageColor = getAverage(cols, boxPosition.clientX, boxPosition.clientY)
+
     let newArray = colorsArray
     const newColor =
     {
       color: boxPosition.color,
-      avergColor: averageColor
+      avergColor: AverageColor
     }
 
     newArray.push(newColor)
@@ -466,7 +486,7 @@ export default function ImgSection(props) {
   }
 
   return (
-    <div className='imgSection'>
+    <div className='imgSection' style={canvas.current && { width: canvas.current.width + 40 }}>
 
       <div className="imgContainer">
         <div className="image active" ref={container} >
@@ -481,7 +501,7 @@ export default function ImgSection(props) {
         </div>
       </div>
 
-      {props.section == 'color' && <div className='colorsContainer'>
+      {props.section == 'color' && <div className='colorsExtraction'>
         {colorsArray.map((e, i) => {
           return <div key={i} className='box'>
             <div style={{ backgroundColor: e.color }}  >

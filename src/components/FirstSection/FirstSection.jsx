@@ -1,6 +1,7 @@
 import './FirstSection.scss'
 import { useNavigate } from 'react-router-dom'
 import { useRef } from 'react';
+
 export default function FirstSection() {
     const navigate = useNavigate();
     const uploadInput = useRef()
@@ -18,20 +19,21 @@ export default function FirstSection() {
         <div className='firstSection'>
             <h2>Free Online PhotoShop</h2>
             <div className='overLay'>
-                <h3>The Free Online Photo Shop lets you edit images ONLINE!</h3>
+                <h3>The Free Online PhotoShop lets you edit images ONLINE!</h3>
                 <ul>
-                    <li>Resize or Crop all (animated gif) images.</li>
-                    <li>Merge, Blend and Overlay Images with the editor.</li>
-                    <li>Add Text with your own fonts to an (animated) image.</li>
-                    <li>Add Borders, round corners and shadow to your photo.</li>
-                    <li>Put an image in a Photo Frame or add a Mask.</li>
-                    <li>Overlay images with predefined animations!</li>
-                    <li>Convert, sharpen, reduce size of an animated gif...</li>
-                    <li>Use the Cut Out Tool to make a heart shape image.</li>
+                    <li>Resize ,rotate and Crop images.</li>
+                    <li>Add stickers to an image.</li>
+                    <li>Add Text with your own fonts to an image.</li>
+                    <li>Add Borders with your color and width to your photo.</li>
+                    <li>Put an image in a Photo Frame .</li>
+                    <li>Overlay images with filters!</li>
+                    <li>Convert, sharpen, reduce size of an image</li>
+                    <li>Use the shape Tool to make a heart shape image.</li>
+                    <li>Extract colors from image.</li>
 
                     <div className='upload' >
                         <label htmlFor="upload" >Upload an Image</label>
-                        <input type="file" id='upload' onChange={HandleUpload} ref={uploadInput}/>
+                        <input type="file" id='upload' onChange={HandleUpload} ref={uploadInput} />
                     </div>
                 </ul>
             </div>

@@ -42,18 +42,18 @@ export default function Draw({ drawEffect }) {
 
     function HandleSize(e) {
         e.dataTransfer.setDragImage(new Image(), 0, 0)
-        if (e.clientX > 10 && e.clientX < boundary - 20) {
-            let size = (e.clientX - 10) / (boundary / 60)
-            setDrawProprties({ ...drawProprties, fontLength: e.clientX - 10, fontSize: Math.floor(size) })
-            drawEffect({ ...drawProprties, fontLength: e.clientX - 10, fontSize: Math.floor(size) })
+        if (e.pageX > 10 && e.pageX < boundary - 20) {
+            let size = (e.pageX - 10) / (boundary / 60)
+            setDrawProprties({ ...drawProprties, fontLength: e.pageX - 10, fontSize: Math.floor(size) })
+            drawEffect({ ...drawProprties, fontLength: e.pageX - 10, fontSize: Math.floor(size) })
         }
     }
     function HandleShadow(e) {
         e.dataTransfer.setDragImage(new Image(), 0, 0)
-        if (e.clientX > 10 && e.clientX < boundary - 20) {
-            let size = (e.clientX - 10) / (boundary / 20)
-            setDrawProprties({ ...drawProprties, shadowLength: e.clientX - 10, shadowSize: Math.floor(size) })
-            drawEffect({ ...drawProprties, shadowLength: e.clientX - 10, shadowSize: Math.floor(size) })
+        if (e.pageX > 10 && e.pageX < boundary - 20) {
+            let size = (e.pageX - 10) / (boundary / 20)
+            setDrawProprties({ ...drawProprties, shadowLength: e.pageX - 10, shadowSize: Math.floor(size) })
+            drawEffect({ ...drawProprties, shadowLength: e.pageX - 10, shadowSize: Math.floor(size) })
         }
     }
 

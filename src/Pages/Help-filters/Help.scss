@@ -4,8 +4,7 @@
     padding: 20px;
 
     .container {
-        margin: 0px auto;
-        background-color: white;
+
         padding: 20px;
         display: flex;
         flex-direction: column;
@@ -16,6 +15,13 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+
+            .together {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, 200px);
+                gap: 50px;
+                justify-content: center;
+            }
         }
 
         h2 {
@@ -25,24 +31,16 @@
         img {
             width: 200px;
             align-self: center;
+
+            &.big {
+                width: 320px;
+            }
         }
     }
-}
 
-@media (min-width:767px) {
-    .container {
-        width: 760px;
-    }
-}
-
-@media (min-width:997px) {
-    .container {
-        width: 990px;
-    }
-}
-
-@media (min-width:1200px) {
-    .container {
-        width: 1000px;
+    .note {
+        img {
+            width: 320px;
+        }
     }
 }
