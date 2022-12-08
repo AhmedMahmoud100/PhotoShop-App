@@ -9,10 +9,8 @@ export default function Color() {
         - the specific color of the pixel you had clicked on
         will be show under the image
       </p>
-
       <p> - the average color of the <span>41x41 px</span> surrounding the pixel you had clicked on
         will be show under the image too </p>
-
     </div>
   )
 }

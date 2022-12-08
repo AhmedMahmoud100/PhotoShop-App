@@ -4,13 +4,16 @@
     padding: 20px;
 
     .container {
-
         padding: 20px;
         display: flex;
         flex-direction: column;
         gap: 20px;
         box-shadow: 0px 0px 4px 1px rgb(0 0 0 / 30%);
-
+        
+        p {
+            color: rgb(79, 79, 79);
+            line-height: 1.5;
+        }
         div {
             display: flex;
             flex-direction: column;

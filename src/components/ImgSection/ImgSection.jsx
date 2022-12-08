@@ -43,26 +43,29 @@ export default function ImgSection(props) {
     if (props.options.download) {
       download.current.click();
     }
-    if (props.options.save && props.section != 'color') {
-      ConvertToTheOriginalCanvas()
-      MakeNewCanvas();
-    }
-    if (props.section === "text" && props.options.save) {
-      HandleText()
-      ConvertToTheOriginalCanvas()
-      MakeNewCanvas();
+    else {
+      if (props.section === "text" && props.options.save) {
+        HandleText()
+        ConvertToTheOriginalCanvas()
+        MakeNewCanvas();
 
+      }
+      else if (props.section === "sticker" && props.options.save) {
+        HandleSticker()
+        ConvertToTheOriginalCanvas()
+        MakeNewCanvas();
+      }
+      else if ((props.section === "crop") && props.options.save) {
+        HandleCrop();
+        ConvertToTheOriginalCanvas()
+        MakeNewCanvas();
+      }
+      else if (props.options.save && props.section != 'color') {
+        ConvertToTheOriginalCanvas()
+        MakeNewCanvas();
+      }
     }
-    if (props.section === "sticker" && props.options.save) {
-      HandleSticker()
-      ConvertToTheOriginalCanvas()
-      MakeNewCanvas();
-    }
-    if ((props.section === "crop") && props.options.save) {
-      HandleCrop();
-      ConvertToTheOriginalCanvas()
-      MakeNewCanvas();
-    }
+
   }, [props.options])
 
   useEffect(() => {
@@ -83,7 +86,6 @@ export default function ImgSection(props) {
     NewctxRef.current = Newctx
 
     image.onload = function () {
-
       canvas.current.width = image.naturalWidth;
       canvas.current.height = image.naturalHeight;
       canvas.current.style.display = "block"
@@ -91,6 +93,7 @@ export default function ImgSection(props) {
 
       ctx.drawImage(image, 0, 0, canvas.current.width, canvas.current.height);
       MakeNewCanvas();
+      CanvasInfo();
       props.imgDimentions(
         {
           width: image.naturalWidth,
@@ -115,7 +118,7 @@ export default function ImgSection(props) {
     download.current.href = canvas.current.toDataURL()
   }
 
-  function CanvasInfo(e) {
+  function CanvasInfo() {
     const updatedCanvasInfo = {
       width: canvas.current.width,
       height: canvas.current.height,
@@ -125,10 +128,6 @@ export default function ImgSection(props) {
     setCanvasInfo({ ...updatedCanvasInfo })
   }
 
-  useEffect(() => {
-    CanvasInfo();
-  }
-    , [])
 
   function MakeNewCanvas() {
     NewCanvas.current.width = canvas.current.width;
@@ -136,28 +135,24 @@ export default function ImgSection(props) {
     NewCanvas.current.style.display = "block"
     canvas.current.style.display = "none";
     NewctxRef.current.drawImage(canvas.current, 0, 0, canvas.current.width, canvas.current.height);
+    CanvasInfo();
   }
 
   useEffect(() => {
     if (NewctxRef.current) {
       MakeNewCanvas();
-      setcropEffect({ ...cropEffect, addText: false })
-
       if (props.section === 'color') {
         ConvertToTheOriginalCanvas();
       }
     }
-
   }, [props.section])
 
   function ConvertToTheOriginalCanvas() {
-
     NewCanvas.current.style.display = "none"
     canvas.current.style.display = "block";
     canvas.current.width = NewCanvas.current.width;
     canvas.current.height = NewCanvas.current.height;
     ctxRef.current.drawImage(NewCanvas.current, 0, 0, NewCanvas.current.width, NewCanvas.current.height);
-
   }
 
   function HandleFilters() {
@@ -180,7 +175,6 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.section === "resize") {
       HandleResize();
-
     }
   }, [props.resizeEffect])
 
@@ -209,16 +203,13 @@ export default function ImgSection(props) {
     let sourceH = cropEffect.sourceH;
     NewCanvas.current.width = sourceW;
     NewCanvas.current.height = sourceH;
-
     NewctxRef.current.drawImage(canvas.current, offsetX, offsetY, sourceW, sourceH, 0, 0, sourceW, sourceH);
   }
 
   function DrawStart(e, fontSize, fontColor, shadowSize, shadowColor) {
     let x = e.pageX - canvasInfo.x
     let y = e.pageY - canvasInfo.y
-    console.log(canvasInfo.y)
     NewctxRef.current.beginPath()
-
     NewctxRef.current.lineJoin = NewctxRef.current.lineCap = 'round'
     NewctxRef.current.shadowBlur = shadowSize;
     NewctxRef.current.shadowColor = shadowColor
@@ -235,7 +226,6 @@ export default function ImgSection(props) {
       NewctxRef.current.lineTo(x, y)
       NewctxRef.current.stroke()
     }
-
   }
   function DrawEnd() {
     NewctxRef.current.closePath();
@@ -251,11 +241,6 @@ export default function ImgSection(props) {
       setDragPosition({ offsetX: 0, offsetY: 0 })
     }
   }
-
-  useEffect(() => {
-
-  }, [props.textEffect])
-
 
   const Textstyle = {
     color: props.textEffect.color,
@@ -282,7 +267,6 @@ export default function ImgSection(props) {
 
   useEffect(() => {
     HandleBorder();
-
   }, [props.borderEffect])
 
   function HandleFrame() {
@@ -302,7 +286,6 @@ export default function ImgSection(props) {
       }
       const frameImage = new Image(NewCanvas.current.width, NewCanvas.current.height);
       frameImage.src = props.frameEffect.src
-
       NewCanvas.current.width = canvas.current.width + offsite
       NewCanvas.current.height = canvas.current.height + offsite
       NewctxRef.current.drawImage(canvas.current, offsite / 2, offsite / 2, canvas.current.width, canvas.current.height)
@@ -312,7 +295,6 @@ export default function ImgSection(props) {
 
   useEffect(() => {
     HandleFrame();
-
   }, [props.frameEffect])
 
 
@@ -325,12 +307,8 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (NewctxRef.current && props.stickerEffect.src) {
       sticker.current.style.display = 'block'
-
     }
-
   }, [props.stickerEffect])
-
-
 
   const stickerStyle = {
     top: dragPosition.offsetY,
@@ -380,9 +358,9 @@ export default function ImgSection(props) {
   function GetPixelColor(cols, offsetX, offsetY) {
     let y = offsetY - 1 >= 0 ? offsetY - 1 : 0
     let x = offsetX - 1 >= 0 ? offsetX - 1 : 0
-    const pixelIndex = ( cols * y ) + x
-    const colorIndex =  pixelIndex * 4  
-   
+    const pixelIndex = (cols * y) + x
+    const colorIndex = pixelIndex * 4
+
     const PixelColor = {
       red: imgDataRef.current[colorIndex],
       green: imgDataRef.current[colorIndex + 1],

@@ -1,8 +1,8 @@
 import './FirstSection.scss'
 import { useNavigate } from 'react-router-dom'
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-export default function FirstSection() {
+export default function FirstSection({ upload }) {
     const navigate = useNavigate();
     const uploadInput = useRef()
 
@@ -15,6 +15,12 @@ export default function FirstSection() {
         }
 
     }
+
+    useEffect(() => {
+        if (upload) {
+            uploadInput.current.click()
+        }
+    }, [upload])
     return (
         <div className='firstSection'>
             <h2>Free Online PhotoShop</h2>

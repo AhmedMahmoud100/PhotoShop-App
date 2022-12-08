@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './Border.scss'
+
 export default function Border({ borderEffect }) {
     const container = useRef()
     const [boundary, setBoundary] = useState(0)
@@ -58,12 +59,8 @@ export default function Border({ borderEffect }) {
                 </div>
             </div>
 
-
-
             <div className='custom-color'>
-
                 <h3> Color</h3>
-
                 <div className='colors-container'>
                     <div className={customColor.first === borderProprties.color ? 'active' : null}>
                         <input type="color" name="first" value={customColor.first} onChange={HandleCustomColor} />
@@ -83,6 +80,5 @@ export default function Border({ borderEffect }) {
                 </div>
             </div>
         </div>
-
     )
 }

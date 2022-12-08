@@ -10,12 +10,11 @@ import Filter from '../../components/filters/Filter'
 import Resize from '../../components/Reasize/Resize'
 import Shape from '../../components/Shape/Shape'
 import Sticker from '../../components/Sticker/Sticker'
-import Transform from '../../components/Transform/Transform'
+import Rotate from '../../components/rotate/Rotate'
 import Text from '../../components/Text/Text'
 import ContextPovider from '../../context/ThemeContext'
 import { useState } from 'react'
-import NavBar from '../../components/NavBar/NavBar'
-import CropArea from '../../components/CropArea/CropArea'
+import ToolBar from '../../components/ToolBar/ToolBar'
 import Instructions from '../../components/instructions/Instructions'
 import Options from '../../components/options/Options'
 
@@ -39,14 +38,14 @@ export default function Main() {
     return (
         <main>
             <ContextPovider>
-                < NavBar section={setSection} />
+                < ToolBar section={setSection} />
                 <div className='mainSection' >
                     <aside className='main-aside'>
                     <Options options={setOptions} />
                     {section === "first" && <Instructions />}
                     {section === "filter" && <Filter filtersEffect={setFiltersEffect} />}
                     {section === "resize" && <Resize resizeEffect={setresizeEffect} imgDimentions={imgDimentions} />}
-                    {section === "rotate" && <Transform rotateEffect={setRotateEffect} />}
+                    {section === "rotate" && <Rotate rotateEffect={setRotateEffect} />}
                     {section === "draw" && <Draw drawEffect={setDrawEffect} />}
                     {section === "text" && <Text textEffect={setTextEffect} />}
                     {section === "color" && <Color />}
@@ -56,11 +55,7 @@ export default function Main() {
                     {section === "shape" && <Shape shapeEffect={setShapeEffect} />}
                     {section === "crop" && <Crop />}
                     </aside>
-                    {/* <CropArea /> */}
                     <ImgSection  options={options} imgDimentions={setImgDimentions} shapeEffect={shapeEffect} stickerEffect={stickerEffect} frameEffect={frameEffect} borderEffect={borderEffect} textEffect={textEffect} drawEffect={drawEffect} filtersEffect={filtersEffect} resizeEffect={resizeEffect} rotateEffect={rotateEffect} showBorder={section === "crop" ? true : false} section={section} />
-
-                    {/* <Clone /> */}
-
                 </div>
             </ContextPovider>
         </main>

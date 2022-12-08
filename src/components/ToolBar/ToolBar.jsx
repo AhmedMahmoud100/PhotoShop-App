@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import './NavBar.scss'
+import './ToolBar.scss'
 import TuneIcon from '@mui/icons-material/Tune';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import CropIcon from '@mui/icons-material/Crop';
@@ -12,10 +11,10 @@ import FilterFramesOutlinedIcon from '@mui/icons-material/FilterFramesOutlined';
 import BorderOuterIcon from '@mui/icons-material/BorderOuter';
 import ColorizeIcon from '@mui/icons-material/Colorize';
 
-export default function NavBar({ section }) {
+export default function ToolBar({ section }) {
 
     return (
-        <div className='navBar'>
+        <div className='toolBar'>
             <ul>
                 <li onClick={() => section("filter")}>
                     <TuneIcon />

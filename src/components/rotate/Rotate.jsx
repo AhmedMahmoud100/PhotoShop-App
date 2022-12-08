@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import './Transform.scss'
+import './Rotate.scss'
 
-export default function Transform({ rotateEffect }) {
+export default function Rotate({ rotateEffect }) {
   const [rotateDegree, setRotateDegree] = useState(0)
 
   function HandleRotate(e) {

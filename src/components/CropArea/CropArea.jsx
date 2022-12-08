@@ -36,9 +36,7 @@ export default function CropArea({ canvasDimentions }) {
                 setcrop({ ...crop, sourceH: y, sourceW: x })
             }
         }
-
     }
-
 
     function ExtendTopLeftStart(e) {
         setDim({
@@ -162,22 +160,45 @@ export default function CropArea({ canvasDimentions }) {
             setcrop({ ...crop, sourceH: y, offsetY: Math.round(e.pageY - canvasDimentions.y) })
         }
     }
-   
+
     return (
         <>
-            <div className='square' style={style} ref={square}  >
-
-                <div className='hidden' draggable={true} onDragStart={(e) => DragStart(e, canvasDimentions, square.current, setDim, dim)} onDrag={(e) =>  Drag(e, canvasDimentions, crop.sourceW,crop.sourceH,setcrop,crop,dim)} onDragEnd={(e) => Drag(e, canvasDimentions, crop.sourceW,crop.sourceH,setcrop,crop,dim)} >
-
+            <div className='cropArea' style={style} ref={square}  >
+                <div className='hidden' draggable={true}
+                    onDragStart={(e) => DragStart(e, canvasDimentions, square.current, setDim, dim)}
+                    onDrag={(e) => Drag(e, canvasDimentions, crop.sourceW, crop.sourceH, setcrop, crop, dim)}
+                    onDragEnd={(e) => Drag(e, canvasDimentions, crop.sourceW, crop.sourceH, setcrop, crop, dim)} >
                 </div>
-                <div className='corners BR' draggable={true} onDragStart={ExtendBottomRightStart} onDrag={ExtendBottomRight} ></div>
-                <div className='corners BL' draggable={true} onDragStart={ExtendBottomLeftStart} onDrag={ExtendBottomLeft}  ></div>
-                <div className='corners TR' draggable={true} onDragStart={ExtendTopRightStart} onDrag={ExtendTopRight}  ></div>
-                <div className='corners TL' draggable={true} onDragStart={ExtendTopLeftStart} onDrag={ExtendTopLeft}  ></div>
-                <div className='sides right' draggable={true} onDragStart={ExtendRightStart} onDrag={ExtendRight} ></div>
-                <div className='sides left' draggable={true} onDragStart={ExtendLeftStart} onDrag={ExtendLeft} ></div>
-                <div className='sides top' draggable={true} onDragStart={ExtendTopStart} onDrag={ExtendTop} ></div>
-                <div className='sides bottom' draggable={true} onDrag={ExtendBottom} ></div>
+                <div className='corners BR' draggable={true}
+                    onDragStart={ExtendBottomRightStart}
+                    onDrag={ExtendBottomRight} ></div>
+
+                <div className='corners BL' draggable={true}
+                    onDragStart={ExtendBottomLeftStart}
+                    onDrag={ExtendBottomLeft}  ></div>
+
+                <div className='corners TR' draggable={true}
+                    onDragStart={ExtendTopRightStart}
+                    onDrag={ExtendTopRight}  ></div>
+
+                <div className='corners TL' draggable={true}
+                    onDragStart={ExtendTopLeftStart}
+                    onDrag={ExtendTopLeft}  ></div>
+
+                <div className='sides right' draggable={true}
+                    onDragStart={ExtendRightStart}
+                    onDrag={ExtendRight} ></div>
+
+                <div className='sides left' draggable={true}
+                    onDragStart={ExtendLeftStart}
+                    onDrag={ExtendLeft} ></div>
+
+                <div className='sides top' draggable={true}
+                    onDragStart={ExtendTopStart}
+                    onDrag={ExtendTop} ></div>
+
+                <div className='sides bottom' draggable={true}
+                    onDrag={ExtendBottom} ></div>
             </div>
         </>
     )
