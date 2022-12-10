@@ -14,7 +14,7 @@ export default function Frame({ frameEffect }) {
             <h2>frames</h2>
             <div className='imgContaier'>
                 {imageData.map((img) => {
-                    return <img src={img.src} alt='' key={img.id} id={img.id} onClick={HandleFrame}></img>
+                    return <img src={img.src} alt='' key={img.id} id={img.id} onClick={HandleFrame} referrerPolicy='no-referrer'></img>
                 })}
             </div>
 

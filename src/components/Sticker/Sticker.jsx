@@ -30,7 +30,7 @@ export default function Sticker({ stickerEffect }) {
             </div>
             <div className='stickerContaier'>
                 {stickerData.map((img) => {
-                    return <img src={img.src} alt='' key={img.id} id={img.id} onClick={HandleSticker}></img>
+                    return <img src={img.src} alt='' key={img.id} id={img.id} onClick={HandleSticker} referrerPolicy='no-referrer'></img>
                 })}
             </div>
 

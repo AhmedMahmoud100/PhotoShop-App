@@ -1,6 +1,6 @@
 import './Shape.scss'
 import shapeData from './Shape.json'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 export default function Shape({ shapeEffect }) {
     const [shapeProp, setShapeProp] = useState({})
 
@@ -14,7 +14,7 @@ export default function Shape({ shapeEffect }) {
             <h2>Shapes</h2>
             <div className='shapes-container'>
                 {shapeData.map((img) => {
-                    return <img src={img.src} alt='' key={img.id} id={img.id} onClick={HandleShape}></img>
+                    return <img src={img.src} alt='' key={img.id} id={img.id} onClick={HandleShape} referrerPolicy='no-referrer' ></img>
                 })}
             </div>
         </div>
