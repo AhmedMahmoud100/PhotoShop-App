@@ -156,6 +156,7 @@ export default function ImgSection(props) {
   }
 
   function HandleFilters() {
+    NewctxRef.current.clearRect(0,0,canvas.current.width,canvas.current.height)
     NewctxRef.current.filter = props.filtersEffect.filter
     NewctxRef.current.drawImage(canvas.current, 0, 0, canvas.current.width, canvas.current.height);
   }
