@@ -34,6 +34,7 @@ export default function ImgSection(props) {
   })
   const [colorsArray, SetColorsArray] = useState([])
   const [dim, setDim] = useState()
+  const [cropArea, setCropArea] = useState(false)
 
   useEffect(() => {
     setImgSrc(props.options.src)
@@ -42,6 +43,7 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (props.options.download) {
       download.current.click();
+      setCropArea(false)
     }
     else {
       if (props.section === "text" && props.options.save) {
@@ -55,7 +57,8 @@ export default function ImgSection(props) {
         ConvertToTheOriginalCanvas()
         MakeNewCanvas();
       }
-      else if ((props.section === "crop") && props.options.save) {
+      else if (props.section == "crop" && props.options.save) {
+        setCropArea(false)
         HandleCrop();
         ConvertToTheOriginalCanvas()
         MakeNewCanvas();
@@ -86,8 +89,8 @@ export default function ImgSection(props) {
     NewctxRef.current = Newctx
 
     image.onload = function () {
-      canvas.current.width = image.naturalWidth;
-      canvas.current.height = image.naturalHeight;
+      canvas.current.width = image.naturalWidth / 2;
+      canvas.current.height = image.naturalHeight / 2;
       canvas.current.style.display = "block"
       NewCanvas.current.style.display = "none"
 
@@ -103,19 +106,25 @@ export default function ImgSection(props) {
     }
   }, [imgSrc])
 
-
   useEffect(() => {
     setcropEffect({
       offsetX: 0,
       offsetY: 0,
-      sourceW: props.resizeEffect.width / 2,
-      sourceH: props.resizeEffect.height / 2,
-      apply: false,
+      sourceW: canvas.current.width / 2,
+      sourceH: canvas.current.height / 2,
     })
-  }, [props.resizeEffect])
+  }, [props.options.save])
 
   function handleDownload() {
-    download.current.href = canvas.current.toDataURL()
+    NewCanvas.current.width = canvas.current.width * 2;
+    NewCanvas.current.height = canvas.current.height * 2;
+
+    NewctxRef.current.drawImage(canvas.current, 0, 0, NewCanvas.current.width, NewCanvas.current.height)
+    download.current.href = NewCanvas.current.toDataURL()
+    NewctxRef.current.clearRect(0, 0, NewCanvas.current.width, NewCanvas.current.height)
+    NewCanvas.current.width = canvas.current.width;
+    NewCanvas.current.height = canvas.current.height;
+    NewctxRef.current.drawImage(canvas.current, 0, 0, canvas.current.width, canvas.current.height)
   }
 
   function CanvasInfo() {
@@ -141,6 +150,11 @@ export default function ImgSection(props) {
   useEffect(() => {
     if (NewctxRef.current) {
       MakeNewCanvas();
+      if ((props.section == "crop")) {
+        setCropArea(true)
+      } else {
+        setCropArea(false)
+      }
       if (props.section === 'color') {
         ConvertToTheOriginalCanvas();
       }
@@ -156,7 +170,7 @@ export default function ImgSection(props) {
   }
 
   function HandleFilters() {
-    NewctxRef.current.clearRect(0,0,canvas.current.width,canvas.current.height)
+    NewctxRef.current.clearRect(0, 0, canvas.current.width, canvas.current.height)
     NewctxRef.current.filter = props.filtersEffect.filter
     NewctxRef.current.drawImage(canvas.current, 0, 0, canvas.current.width, canvas.current.height);
   }
@@ -168,8 +182,8 @@ export default function ImgSection(props) {
   }, [props.filtersEffect])
 
   function HandleResize() {
-    NewCanvas.current.width = props.resizeEffect.width;
-    NewCanvas.current.height = props.resizeEffect.height;
+    NewCanvas.current.width = props.resizeEffect.width / 2;
+    NewCanvas.current.height = props.resizeEffect.height / 2;
     NewctxRef.current.drawImage(canvas.current, 0, 0, NewCanvas.current.width, NewCanvas.current.height)
   }
 
@@ -470,9 +484,9 @@ export default function ImgSection(props) {
       <div className="imgContainer">
         <div className="image active" ref={container} >
 
-          <canvas ref={canvas} id="canvas" className={props.showBorder && !cropEffect.apply ? "blur" : "normal"} onMouseMove={props.section == "color" ? GetPixel : null}  ></canvas>
+          <canvas ref={canvas} id="canvas" className={cropArea ? "blur" : "normal"} onMouseMove={props.section == "color" ? GetPixel : null}  ></canvas>
           <canvas ref={NewCanvas} onMouseDown={props.section === "draw" ? (e) => DrawStart(e, props.drawEffect.fontSize, props.drawEffect.fontColor, props.drawEffect.shadowSize, props.drawEffect.shadowColor) : null} onMouseMove={props.section === "draw" ? Draw : null} onMouseUp={props.section === "draw" ? DrawEnd : null}></canvas>
-          {props.showBorder && !props.options.save ? <CropArea canvasDimentions={canvasInfo} /> : null}
+          {cropArea ? <CropArea canvasDimentions={canvasInfo} /> : null}
           {props.section === 'text' ? <input className='text' type="text" style={Textstyle} value={text} onChange={(e) => setText(e.target.value)} onDragStart={(e) => DragStart(e, canvasInfo, textInput.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.textEffect.size * 2, props.textEffect.size * 1.2, setDragPosition, dragPosition, dim)} ref={textInput} ></input> : null}
           {props.section === 'sticker' ? <img src={props.stickerEffect.src} ref={sticker} className='sticker' draggable={true} onDragStart={(e) => DragStart(e, canvasInfo, sticker.current, setDim, dim)} onDragEnd={(e) => Drag(e, canvasInfo, props.stickerEffect.width, props.stickerEffect.height, setDragPosition, dragPosition, dim)} style={stickerStyle}  ></img> : null}
           {props.section === 'color' ? <div className="pointerBox" style={PointerStyle} onClick={props.section == "color" ? AddBox : null}></div> : null}

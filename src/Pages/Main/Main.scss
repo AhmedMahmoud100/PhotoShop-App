@@ -11,6 +11,7 @@ main {
         color: rgb(0 167 255 / 90%);
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.75);
         clip-path: inset(0px -15px 0px 0px);
+        min-width: 250px;
 
         h2 {
             align-self: center;
@@ -28,7 +29,7 @@ main {
 
 }
 
-@media(max-width:650px) {
+@media(max-width:779px) {
     main {
         .mainSection {
             flex-direction: column;

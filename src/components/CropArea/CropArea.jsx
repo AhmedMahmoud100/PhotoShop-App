@@ -112,7 +112,6 @@ export default function CropArea({ canvasDimentions }) {
     function ExtendRight(e) {
         if (e.pageX > 0) {
             let x = Math.round(e.pageX - dim.x + dim.width)
-            console.log(canvasDimentions.x,canvasDimentions.width , e.pageX)
             if (e.pageX < canvasDimentions.x + canvasDimentions.width) {
                 setcrop({ ...crop, sourceW: x })
             }

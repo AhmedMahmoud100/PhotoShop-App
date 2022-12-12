@@ -28,6 +28,7 @@ export default function Options({ options }) {
 
     useEffect(() => {
         setData({ ...data, download: false })
+        options({ ...data, download: false })
     }, [data.download])
 
     function HandleDelete() {
@@ -41,6 +42,7 @@ export default function Options({ options }) {
 
     useEffect(() => {
         setData({ ...data, save: false })
+        options({ ...data, save: false })
     }, [data.save])
 
     return (

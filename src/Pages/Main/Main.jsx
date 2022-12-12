@@ -55,7 +55,7 @@ export default function Main() {
                     {section === "shape" && <Shape shapeEffect={setShapeEffect} />}
                     {section === "crop" && <Crop />}
                     </aside>
-                    <ImgSection  options={options} imgDimentions={setImgDimentions} shapeEffect={shapeEffect} stickerEffect={stickerEffect} frameEffect={frameEffect} borderEffect={borderEffect} textEffect={textEffect} drawEffect={drawEffect} filtersEffect={filtersEffect} resizeEffect={resizeEffect} rotateEffect={rotateEffect} showBorder={section === "crop" ? true : false} section={section} />
+                    <ImgSection  options={options} imgDimentions={setImgDimentions} shapeEffect={shapeEffect} stickerEffect={stickerEffect} frameEffect={frameEffect} borderEffect={borderEffect} textEffect={textEffect} drawEffect={drawEffect} filtersEffect={filtersEffect} resizeEffect={resizeEffect} rotateEffect={rotateEffect}  section={section} />
                 </div>
             </ContextPovider>
         </main>
