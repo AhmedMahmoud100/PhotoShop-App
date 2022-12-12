@@ -112,6 +112,7 @@ export default function CropArea({ canvasDimentions }) {
     function ExtendRight(e) {
         if (e.pageX > 0) {
             let x = Math.round(e.pageX - dim.x + dim.width)
+            console.log(canvasDimentions.x,canvasDimentions.width , e.pageX)
             if (e.pageX < canvasDimentions.x + canvasDimentions.width) {
                 setcrop({ ...crop, sourceW: x })
             }
@@ -171,34 +172,48 @@ export default function CropArea({ canvasDimentions }) {
                 </div>
                 <div className='corners BR' draggable={true}
                     onDragStart={ExtendBottomRightStart}
-                    onDrag={ExtendBottomRight} ></div>
+                    onDrag={ExtendBottomRight}
+                    onDragEnd={ExtendBottomRight}
+                     ></div>
 
                 <div className='corners BL' draggable={true}
                     onDragStart={ExtendBottomLeftStart}
-                    onDrag={ExtendBottomLeft}  ></div>
+                    onDrag={ExtendBottomLeft} 
+                    onDragEnd={ExtendBottomLeft}
+                     ></div>
 
                 <div className='corners TR' draggable={true}
                     onDragStart={ExtendTopRightStart}
-                    onDrag={ExtendTopRight}  ></div>
+                    onDrag={ExtendTopRight} 
+                    onDragEnd={ExtendTopRight}
+                     ></div>
 
                 <div className='corners TL' draggable={true}
                     onDragStart={ExtendTopLeftStart}
-                    onDrag={ExtendTopLeft}  ></div>
+                    onDrag={ExtendTopLeft} 
+                    onDragEnd={ExtendTopLeft}
+                     ></div>
 
                 <div className='sides right' draggable={true}
                     onDragStart={ExtendRightStart}
-                    onDrag={ExtendRight} ></div>
+                    onDrag={ExtendRight}
+                    onDragEnd={ExtendRight}
+                     ></div>
 
                 <div className='sides left' draggable={true}
                     onDragStart={ExtendLeftStart}
-                    onDrag={ExtendLeft} ></div>
+                    onDrag={ExtendLeft} 
+                    onDragEnd={ExtendLeft}></div>
 
                 <div className='sides top' draggable={true}
                     onDragStart={ExtendTopStart}
-                    onDrag={ExtendTop} ></div>
+                    onDrag={ExtendTop} 
+                    onDragEnd={ExtendTop}></div>
 
                 <div className='sides bottom' draggable={true}
-                    onDrag={ExtendBottom} ></div>
+                    onDrag={ExtendBottom}
+                    onDragEnd={ExtendBottom}
+                     ></div>
             </div>
         </>
     )
